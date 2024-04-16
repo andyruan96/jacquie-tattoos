@@ -1,35 +1,65 @@
+import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
+import { faInstagram, faTiktok } from '@fortawesome/free-brands-svg-icons';
+import { faCircleQuestion, faImage } from '@fortawesome/free-regular-svg-icons';
+import {
+  faBandAid,
+  faBandage,
+  faCamera,
+  faHouseChimney,
+  faLink,
+  faLocationDot,
+} from '@fortawesome/free-solid-svg-icons';
+
 type NavLink = {
   label: string;
   href: string;
+  icon: IconDefinition;
   isExternal?: boolean;
 };
 
-const NavLinks: NavLink[] = [
+export const NavLinks: NavLink[] = [
   {
     label: 'Home',
-    href: '/home',
+    href: '/',
+    icon: faHouseChimney,
   },
   {
-    label: 'Tattoos',
-    href: '/tattoos',
+    label: 'Gallery',
+    href: '/gallery',
+    icon: faImage,
   },
   {
     label: 'FAQ',
     href: '/faq',
+    icon: faCircleQuestion,
   },
   {
     label: 'Studio',
     href: '/studio',
+    icon: faLocationDot,
   },
   {
     label: 'Aftercare',
     href: '/aftercare',
+    icon: faBandage,
   },
-  {
-    label: 'Other Social Media',
-    href: 'https://jacquietattoos.carrd.co/',
-    isExternal: true,
-  },
+  // {
+  //   label: 'Other Social Media',
+  //   href: 'https://jacquietattoos.carrd.co/',
+  //   isExternal: true,
+  //   icon: faLink,
+  // },
 ];
 
-export default NavLinks;
+export const SocialLinks: NavLink[] = [
+  {
+    label: 'Instagram',
+    href: 'https://www.google.com',
+    icon: faInstagram,
+  },
+  {
+    label: 'TikTok',
+    href: 'https://www.google.com',
+    icon: faTiktok,
+  },
+];
