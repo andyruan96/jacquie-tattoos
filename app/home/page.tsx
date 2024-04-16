@@ -11,7 +11,7 @@ export default function Home() {
           width="0"
           height="0"
           sizes="100vw"
-          className="h-auto w-full object-cover md:max-w-xl"
+          className="h-[500px] w-full object-cover md:h-auto md:max-w-xl"
         />
         <div className="flex h-full flex-col gap-4 bg-black p-10 text-sm text-gray-400 md:-ml-20 md:mr-20 md:mt-20 md:max-w-lg md:max-w-xl">
           <h3 className="text-lg font-bold text-white">JACQUIETATTOOS</h3>
@@ -31,7 +31,7 @@ export default function Home() {
         </div>
       </div>
       <div className="flex flex-col justify-center md:mt-10 md:flex-row">
-        <div className="m-10 md:max-w-sm">
+        <div className="md:w- m-10 md:max-w-sm">
           <div className="flex flex-col gap-4 text-gray-600">
             <h3 className="text-4xl text-black">Hobby Illustrator</h3>
             <p>
@@ -54,7 +54,7 @@ export default function Home() {
           width="0"
           height="0"
           sizes="100vw"
-          className="h-auto w-full object-contain md:max-w-xl"
+          className="h-auto w-full object-contain md:w-2/3 md:max-w-xl"
         />
       </div>
     </div>
