@@ -21,7 +21,6 @@ export default function SideNav() {
 
   useEffect(() => {
     const closeMenu = () => {
-      console.log('check for mem leak');
       setIsMobileMenuOpen(false);
     };
     window.addEventListener('click', closeMenu);
