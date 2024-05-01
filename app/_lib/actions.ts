@@ -4,7 +4,13 @@ import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { ZodParsedType, z } from 'zod';
 import nodemailer from 'nodemailer';
-import EmailTemplate from './email-template';
+import {
+  EmailTemplate,
+  EmailTemplateSingleFormResponse,
+  EmailTemplateQuestionKey,
+  EmailTemplateAnswerKey,
+  EmailTemplateFormResponsesKey,
+} from './email-template';
 import Mail from 'nodemailer/lib/mailer';
 
 const BookingFormSchema = z.object({
@@ -20,13 +26,13 @@ const BookingFormSchema = z.object({
   size: z.coerce.number().gt(0),
   placement: z.string().min(1),
   availability: z
-    .enum(['sunday', 'monday', 'wednesday', 'thursday', 'friday'])
+    .enum(['Sunday', 'Monday', 'Wednesday', 'Thursday', 'Friday'])
     .array()
     .min(1),
   time: z.string(),
   budget: z.string().min(1),
-  previousClient: z.enum(['true', 'false']),
-  medical1: z.enum(['true', 'false']),
+  previousClient: z.enum(['Yes', 'No']),
+  medical1: z.enum(['Yes', 'No']),
   medical2: z.string(),
   moreInfo: z.string(),
 });
@@ -43,11 +49,11 @@ type ParsedBookingForm = {
   description: string;
   size: number;
   placement: string;
-  availability: ('sunday' | 'monday' | 'wednesday' | 'thursday' | 'friday')[];
+  availability: ('Sunday' | 'Monday' | 'Wednesday' | 'Thursday' | 'Friday')[];
   time: string;
   budget: string;
-  previousClient: 'true' | 'false';
-  medical1: 'true' | 'false';
+  previousClient: 'Yes' | 'No';
+  medical1: 'Yes' | 'No';
   medical2: string;
   moreInfo: string;
 };
@@ -98,7 +104,7 @@ export async function sendBookingForm(prevState: State, formData: FormData) {
 
   // process data
   const emailHtml = generateEmailFormResponseHtml(validatedFields.data);
-  // console.log(generateEmailFormResponseHtml(validatedFields.data));
+  console.log(emailHtml);
 
   // if (await sendMail(emailHtml, files)) {
   //   // revalidatePath('/booking');
@@ -126,21 +132,24 @@ async function sendMail(html: string, files?: File[]) {
     },
   });
 
-  const attachments = await Promise.all(
-    (files ?? []).map(async (file) => ({
-      filename: file.name,
-      content: Buffer.from(await file.arrayBuffer()),
-    })),
-  );
-
   const mailOptions: Mail.Options = {
-    from: 'your_email@gmail.com',
+    from: 'your_email@gmail.com', // sending from gmail app -- this has no affect
     to: 'andyruan@hotmail.ca',
-    subject: 'Hello from Nodemailer',
+    subject: 'Hello from Jacquie!',
     // text: 'This is a test email sent using Nodemailer.',
     html,
-    attachments,
   };
+
+  if (files?.length && files[0].size > 0) {
+    const attachments = await Promise.all(
+      (files ?? []).map(async (file) => ({
+        filename: file.name,
+        content: Buffer.from(await file.arrayBuffer()),
+      })),
+    );
+
+    mailOptions.attachments = attachments;
+  }
 
   // transporter.sendMail(mailOptions, (error, info) => {
   //   if (error) {
@@ -188,13 +197,9 @@ function generateEmailFormResponseHtml(validatedFieldsData: ParsedBookingForm) {
     const responseField = validatedFieldsData[cur.key];
 
     return responseField
-      ? `${acc}
-    <tr>
-      <td style="padding: 0 15px 0 0">${cur.label}</td>
-      <td style="padding: 0 15px">${responseField}</td>
-    </tr>`
+      ? `${acc}${EmailTemplateSingleFormResponse.replace(EmailTemplateQuestionKey, cur.label).replace(EmailTemplateAnswerKey, responseField.toString())}`
       : acc;
   }, '');
 
-  return EmailTemplate.replace('{{formResponses}}', formResponses);
+  return EmailTemplate.replace(EmailTemplateFormResponsesKey, formResponses);
 }

@@ -197,10 +197,10 @@ export default function BookingForm() {
           isInvalid={!!state.errors?.previousClient}
           errorMessage="Please answer the above"
         >
-          <SelectItem value="Yes" key="true">
+          <SelectItem value="Yes" key="Yes">
             Yup
           </SelectItem>
-          <SelectItem value="No" key="false">
+          <SelectItem value="No" key="No">
             Nope, first time!
           </SelectItem>
         </Select>
@@ -213,10 +213,10 @@ export default function BookingForm() {
             isInvalid={!!state.errors?.medical1}
             errorMessage="Please answer the above"
           >
-            <SelectItem value="Yes" key="true">
+            <SelectItem value="Yes" key="Yes">
               Yes
             </SelectItem>
-            <SelectItem value="No" key="false">
+            <SelectItem value="No" key="No">
               No
             </SelectItem>
           </Select>
