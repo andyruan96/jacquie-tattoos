@@ -18,7 +18,7 @@ export default function BookingForm() {
   const [state, dispatch] = useFormState(sendBookingForm, initialState);
 
   // checkbox group isInvalid doesn't play nice with server state validation
-  const [availabilityInvalid, setAvailabilityInvalid] = useState(false);
+  const [availabilityInvalid, setAvailabilityInvalid] = useState(true);
 
   return (
     <form
@@ -120,9 +120,11 @@ export default function BookingForm() {
           description="If you're looking to get flash, please give me the name of the flash
           *** I do not tattoo other people's art without permission (except big corp aka manga, tv screen caps etc). If you purchased a tattoo ticket, I need proof of purchase."
           className="my-2"
+          isInvalid={!!state.errors?.description}
         />
 
-        <p>reference pics input here</p>
+        <label htmlFor="file">Choose file to upload</label>
+        <input type="file" id="file" name="file" multiple accept="image/*" />
 
         <Input
           id="size"
@@ -130,6 +132,7 @@ export default function BookingForm() {
           label="Size (In Inches) *"
           type="number"
           min="1"
+          step="0.1"
           className="my-2"
           isInvalid={!!state.errors?.size}
           errorMessage="Please provide a tattoo size"
@@ -159,11 +162,11 @@ export default function BookingForm() {
             setAvailabilityInvalid(value.length < 1);
           }}
         >
-          <Checkbox value="sunday">Sunday</Checkbox>
-          <Checkbox value="monday">Monday</Checkbox>
-          <Checkbox value="wednesday">Wednesday</Checkbox>
-          <Checkbox value="thursday">Thursday</Checkbox>
-          <Checkbox value="friday">Friday</Checkbox>
+          <Checkbox value="Sunday">Sunday</Checkbox>
+          <Checkbox value="Monday">Monday</Checkbox>
+          <Checkbox value="Wednesday">Wednesday</Checkbox>
+          <Checkbox value="Thursday">Thursday</Checkbox>
+          <Checkbox value="Friday">Friday</Checkbox>
         </CheckboxGroup>
 
         <Input
@@ -194,10 +197,10 @@ export default function BookingForm() {
           isInvalid={!!state.errors?.previousClient}
           errorMessage="Please answer the above"
         >
-          <SelectItem value="true" key="true">
+          <SelectItem value="Yes" key="true">
             Yup
           </SelectItem>
-          <SelectItem value="false" key="false">
+          <SelectItem value="No" key="false">
             Nope, first time!
           </SelectItem>
         </Select>
@@ -210,10 +213,10 @@ export default function BookingForm() {
             isInvalid={!!state.errors?.medical1}
             errorMessage="Please answer the above"
           >
-            <SelectItem value="true" key="true">
+            <SelectItem value="Yes" key="true">
               Yes
             </SelectItem>
-            <SelectItem value="false" key="false">
+            <SelectItem value="No" key="false">
               No
             </SelectItem>
           </Select>

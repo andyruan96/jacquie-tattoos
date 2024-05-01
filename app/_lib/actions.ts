@@ -5,6 +5,7 @@ import { redirect } from 'next/navigation';
 import { ZodParsedType, z } from 'zod';
 import nodemailer from 'nodemailer';
 import EmailTemplate from './email-template';
+import Mail from 'nodemailer/lib/mailer';
 
 const BookingFormSchema = z.object({
   email: z.string().email(),
@@ -60,10 +61,12 @@ export type State = {
 };
 
 export async function sendBookingForm(prevState: State, formData: FormData) {
-  //   console.log(formData);
-  console.log(formData.getAll('availability'));
+  console.log(formData);
+  console.log(formData.getAll('file'));
 
-  const validatedFields = BookingFormSchema.safeParse({
+  const files = formData.getAll('file') as File[];
+
+  const validatedFields = await BookingFormSchema.safeParseAsync({
     email: formData.get('email'),
     name: formData.get('name'),
     preferredName: formData.get('preferredName'),
@@ -97,7 +100,7 @@ export async function sendBookingForm(prevState: State, formData: FormData) {
   const emailHtml = generateEmailFormResponseHtml(validatedFields.data);
   // console.log(generateEmailFormResponseHtml(validatedFields.data));
 
-  // if (await sendMail(emailHtml)) {
+  // if (await sendMail(emailHtml, files)) {
   //   // revalidatePath('/booking');
   //   // redirect('/');
   //   return { message: 'Form Processed Successfully.', errors: {} };
@@ -111,7 +114,7 @@ export async function sendBookingForm(prevState: State, formData: FormData) {
   return { message: 'Form Processed Successfully.', errors: {} };
 }
 
-async function sendMail(html: string) {
+async function sendMail(html: string, files?: File[]) {
   const transporter = nodemailer.createTransport({
     service: 'Gmail',
     host: 'smtp.gmail.com',
@@ -123,12 +126,20 @@ async function sendMail(html: string) {
     },
   });
 
-  const mailOptions = {
+  const attachments = await Promise.all(
+    (files ?? []).map(async (file) => ({
+      filename: file.name,
+      content: Buffer.from(await file.arrayBuffer()),
+    })),
+  );
+
+  const mailOptions: Mail.Options = {
     from: 'your_email@gmail.com',
     to: 'andyruan@hotmail.ca',
     subject: 'Hello from Nodemailer',
     // text: 'This is a test email sent using Nodemailer.',
     html,
+    attachments,
   };
 
   // transporter.sendMail(mailOptions, (error, info) => {
