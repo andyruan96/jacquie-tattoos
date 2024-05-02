@@ -12,6 +12,9 @@ import {
   EmailTemplateFormResponsesKey,
 } from './email-template';
 import Mail from 'nodemailer/lib/mailer';
+import sanitize from 'sanitize-html';
+import { writeFile, writeFileSync } from 'fs';
+import axios from 'axios';
 
 const BookingFormSchema = z.object({
   email: z.string().email(),
@@ -66,7 +69,18 @@ export type State = {
   message?: string | null;
 };
 
-export async function sendBookingForm(prevState: State, formData: FormData) {
+export async function sendBookingForm(
+  gRecaptchaToken: string,
+  prevState: State,
+  formData: FormData,
+): Promise<State> {
+  if (!(await checkRecaptcha(gRecaptchaToken))) {
+    return {
+      errors: { ...prevState.errors, recaptcha: ['failed recaptcha'] },
+      message: 'failed recaptcha',
+    };
+  }
+
   console.log(formData);
   console.log(formData.getAll('file'));
 
@@ -105,6 +119,12 @@ export async function sendBookingForm(prevState: State, formData: FormData) {
   // process data
   const emailHtml = generateEmailFormResponseHtml(validatedFields.data);
   console.log(emailHtml);
+
+  // TODO: preview without email
+  writeFileSync(
+    'C:/Users/andyr/projects/jacquie-tattoos/email-test.html',
+    emailHtml,
+  );
 
   // if (await sendMail(emailHtml, files)) {
   //   // revalidatePath('/booking');
@@ -197,9 +217,40 @@ function generateEmailFormResponseHtml(validatedFieldsData: ParsedBookingForm) {
     const responseField = validatedFieldsData[cur.key];
 
     return responseField
-      ? `${acc}${EmailTemplateSingleFormResponse.replace(EmailTemplateQuestionKey, cur.label).replace(EmailTemplateAnswerKey, responseField.toString())}`
+      ? `${acc}${EmailTemplateSingleFormResponse.replace(EmailTemplateQuestionKey, cur.label).replace(EmailTemplateAnswerKey, sanitize(responseField.toString()))}`
       : acc;
   }, '');
 
   return EmailTemplate.replace(EmailTemplateFormResponsesKey, formResponses);
+}
+
+async function checkRecaptcha(gRecaptchaToken: string) {
+  const gRecaptchaSecretKey = process.env.RECAPTCHA_SECRET_KEY;
+  if (!gRecaptchaSecretKey) {
+    console.log('missing google recaptcha secret key');
+    return false;
+  }
+
+  const gRecaptchaFormData = `secret=${gRecaptchaSecretKey}&response=${gRecaptchaToken}`;
+  console.log(gRecaptchaFormData);
+
+  let res;
+  try {
+    res = await axios.post(
+      'https://www.google.com/recaptcha/api/siteverify',
+      gRecaptchaFormData,
+      { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } },
+    );
+  } catch (e) {
+    console.log('issue sending request to recaptcha service');
+    return false;
+  }
+
+  if (res && res.data?.success && res.data?.score > 0.5) {
+    console.log(`recaptcha passed with score of ${res.data.score}`);
+    return true;
+  } else {
+    console.log('recaptcha did not return confident response', res.data);
+    return false;
+  }
 }

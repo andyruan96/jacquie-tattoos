@@ -11,12 +11,58 @@ import {
 import { useFormState } from 'react-dom';
 import { Input, DateInput } from '@nextui-org/react';
 import { State, sendBookingForm } from '@/app/_lib/actions';
-import { ChangeEvent, useEffect, useState } from 'react';
+import { ChangeEvent, useCallback, useEffect, useState } from 'react';
 import Image from 'next/image';
+import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
 
 export default function BookingForm() {
   const initialState: State = { message: '', errors: {} };
-  const [state, dispatch] = useFormState(sendBookingForm, initialState);
+  // let [state, dispatch] = useFormState(
+  //   sendBookingForm.bind(null, 'no token :('),
+  //   initialState,
+  // );
+
+  const [gRecaptchaToken, setGRecaptchaToken] = useState('no token');
+  const { executeRecaptcha } = useGoogleReCaptcha();
+  useEffect(() => {
+    async function fetchGRecaptchaToken() {
+      if (executeRecaptcha) {
+        const token = await executeRecaptcha();
+        setGRecaptchaToken(token);
+        console.log('setting recaptcha token', token);
+      }
+    }
+
+    fetchGRecaptchaToken();
+  }, []);
+  const sendBookingFormWithRecaptcha = useCallback(
+    sendBookingForm.bind(null, gRecaptchaToken),
+    [gRecaptchaToken],
+  );
+
+  // if (executeRecaptcha) {
+  //   const gRecaptchaToken = executeRecaptcha('bookingForm');
+  //   const sendBookingFormWithRecaptcha = sendBookingForm.bind(
+  //     null,
+  //     gRecaptchaToken,
+  //   );
+  //   [state, dispatch] = useFormState(
+  //     sendBookingFormWithRecaptcha,
+  //     initialState,
+  //   );
+  // } else {
+  //   console.log('issue setting up recaptcha');
+  // }
+
+  // console.log('binding recaptcha token', gRecaptchaToken);
+  // const sendBookingFormWithRecaptcha = sendBookingForm.bind(
+  //   null,
+  //   gRecaptchaToken,
+  // );
+  const [state, dispatch] = useFormState(
+    sendBookingFormWithRecaptcha,
+    initialState,
+  );
 
   // checkbox group isInvalid doesn't play nice with server state validation
   const [availabilityInvalid, setAvailabilityInvalid] = useState(true);
@@ -58,7 +104,6 @@ export default function BookingForm() {
     <form
       id="booking-form"
       action={dispatch}
-      aria-describedby="form-error"
       noValidate // Handling all validation on server-side
     >
       <div className="rounded-md bg-gray-50 p-4 md:p-6">
@@ -102,7 +147,7 @@ export default function BookingForm() {
           name="instagram"
           type="text"
           label="Instagram Handle"
-          description="Email will be how I contact you, but if for some reason you're not answering, I may try to contact you over IG. I will not use this for any personal reasons. Strictly business."
+          description="Email will be how I contact you, but if for some reason I'm having trouble contacting you, I may try over IG. I will not use this for any personal reasons. Strictly business."
         />
 
         <Input
@@ -152,6 +197,8 @@ export default function BookingForm() {
           *** I do not tattoo other people's art without permission (except big corp aka manga, tv screen caps etc). If you purchased a tattoo ticket, I need proof of purchase."
           // className="my-2"
           isInvalid={!!state.errors?.description}
+          errorMessage="If you're looking to get flash, please give me the name of the flash
+          *** I do not tattoo other people's art without permission (except big corp aka manga, tv screen caps etc). If you purchased a tattoo ticket, I need proof of purchase."
         />
 
         {/* <label htmlFor="file">Choose file to upload</label>
@@ -164,6 +211,7 @@ export default function BookingForm() {
           <input
             className="w-full cursor-pointer rounded border bg-white text-sm font-semibold text-gray-400 file:mr-4 file:cursor-pointer file:border-0 file:bg-gray-100 file:px-4 file:py-3 file:text-gray-500 file:hover:bg-gray-200"
             id="file"
+            name="file"
             type="file"
             accept="image/*"
             multiple
@@ -205,7 +253,7 @@ export default function BookingForm() {
           type="text"
           className="mb-10"
           isInvalid={!!state.errors?.placement}
-          errorMessage="Please provide the body placement"
+          errorMessage="Please provide the tattoo's placement"
         />
 
         <CheckboxGroup
@@ -295,7 +343,7 @@ export default function BookingForm() {
           label="Anything else I should know about?"
         />
       </div>
-      <div className="flex justify-end gap-4">
+      <div className="ml-6 flex gap-4">
         <Button type="submit">Submit</Button>
       </div>
     </form>

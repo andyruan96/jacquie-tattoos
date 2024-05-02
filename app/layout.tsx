@@ -4,6 +4,7 @@ import './globals.css';
 import SideNav from '@/app/_components/sidenav/sidenav';
 import { config } from '@fortawesome/fontawesome-svg-core';
 import '@fortawesome/fontawesome-svg-core/styles.css';
+import GoogleRecaptchaWrapper from '@/app/_components/google-recaptcha-wrapper/goole-recaptcha-wrapper';
 config.autoAddCss = false;
 
 const inter = Inter({ subsets: ['latin'] });
@@ -21,14 +22,16 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <div className="flex h-screen flex-col md:flex-row md:overflow-hidden">
-          <div className="w-full flex-none text-white md:w-56 md:bg-amber-400 md:px-10 md:pt-5">
-            <SideNav />
+        <GoogleRecaptchaWrapper>
+          <div className="flex h-screen flex-col md:flex-row md:overflow-hidden">
+            <div className="w-full flex-none text-white md:w-56 md:bg-amber-400 md:px-10 md:pt-5">
+              <SideNav />
+            </div>
+            <div className="flex-grow p-8 md:overflow-y-auto md:p-12">
+              {children}
+            </div>
           </div>
-          <div className="flex-grow p-8 md:overflow-y-auto md:p-12">
-            {children}
-          </div>
-        </div>
+        </GoogleRecaptchaWrapper>
       </body>
     </html>
   );
