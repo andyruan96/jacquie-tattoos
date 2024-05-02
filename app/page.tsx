@@ -1,4 +1,4 @@
-import { Button } from '@nextui-org/react';
+import { Button, Link } from '@nextui-org/react';
 import Image from 'next/image';
 
 export default function Home() {
@@ -25,9 +25,11 @@ export default function Home() {
             and all things cute/spooky.
           </p>
           <p>Established in 2019.</p>
-          <Button radius="sm" className="text-md flex-initial bg-white md:w-48">
-            BOOK NOW
-          </Button>
+          <Link className="text-md flex-initial" href="/booking">
+            <Button radius="sm" className=" bg-white md:w-48">
+              BOOK NOW
+            </Button>
+          </Link>
         </div>
       </div>
       <div className="flex flex-col justify-center md:mt-10 md:flex-row">

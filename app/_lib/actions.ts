@@ -75,10 +75,7 @@ export async function sendBookingForm(
   formData: FormData,
 ): Promise<State> {
   if (!(await checkRecaptcha(gRecaptchaToken))) {
-    return {
-      errors: { ...prevState.errors, recaptcha: ['failed recaptcha'] },
-      message: 'failed recaptcha',
-    };
+    throw new Error('Failed Recaptcha');
   }
 
   console.log(formData);
