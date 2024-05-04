@@ -34,7 +34,8 @@ export default function BookingForm() {
     }
 
     fetchGRecaptchaToken();
-  }, []);
+  }, [executeRecaptcha]);
+
   const sendBookingFormWithRecaptcha = useCallback(
     sendBookingForm.bind(null, gRecaptchaToken),
     [gRecaptchaToken],
