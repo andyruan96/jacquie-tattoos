@@ -14,7 +14,6 @@ import {
 import Mail from 'nodemailer/lib/mailer';
 import sanitize from 'sanitize-html';
 import { writeFile, writeFileSync } from 'fs';
-import axios from 'axios';
 
 const BookingFormSchema = z.object({
   email: z.string().email(),
@@ -233,21 +232,24 @@ async function checkRecaptcha(gRecaptchaToken: string) {
 
   let res;
   try {
-    res = await axios.post(
-      'https://www.google.com/recaptcha/api/siteverify',
-      gRecaptchaFormData,
-      { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } },
+    res = await fetch(
+      `https://www.google.com/recaptcha/api/siteverify?${gRecaptchaFormData}`,
+      {
+        method: 'POST',
+        mode: 'cors',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      },
     );
+
+    const response = await res.json();
+    if (response.success && response.score > 0.5) {
+      console.log(`recaptcha passed with score of ${response.score}`);
+      return true;
+    }
   } catch (e) {
     console.log('issue sending request to recaptcha service');
     return false;
   }
 
-  if (res && res.data?.success && res.data?.score > 0.5) {
-    console.log(`recaptcha passed with score of ${res.data.score}`);
-    return true;
-  } else {
-    console.log('recaptcha did not return confident response', res.data);
-    return false;
-  }
+  return false;
 }
