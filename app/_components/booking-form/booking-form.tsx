@@ -11,59 +11,19 @@ import {
 import { useFormState } from 'react-dom';
 import { Input, DateInput } from '@nextui-org/react';
 import { State, sendBookingForm } from '@/app/_lib/actions';
-import { ChangeEvent, useCallback, useEffect, useState } from 'react';
+import {
+  ChangeEvent,
+  FormEvent,
+  useCallback,
+  useEffect,
+  useState,
+} from 'react';
 import Image from 'next/image';
 import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
 
 export default function BookingForm() {
   const initialState: State = { message: '', errors: {} };
-  // let [state, dispatch] = useFormState(
-  //   sendBookingForm.bind(null, 'no token :('),
-  //   initialState,
-  // );
-
-  const [gRecaptchaToken, setGRecaptchaToken] = useState('no token');
-  const { executeRecaptcha } = useGoogleReCaptcha();
-  useEffect(() => {
-    async function fetchGRecaptchaToken() {
-      if (executeRecaptcha) {
-        const token = await executeRecaptcha();
-        setGRecaptchaToken(token);
-        console.log('setting recaptcha token', token);
-      }
-    }
-
-    fetchGRecaptchaToken();
-  }, [executeRecaptcha]);
-
-  const sendBookingFormWithRecaptcha = useCallback(
-    sendBookingForm.bind(null, gRecaptchaToken),
-    [gRecaptchaToken],
-  );
-
-  // if (executeRecaptcha) {
-  //   const gRecaptchaToken = executeRecaptcha('bookingForm');
-  //   const sendBookingFormWithRecaptcha = sendBookingForm.bind(
-  //     null,
-  //     gRecaptchaToken,
-  //   );
-  //   [state, dispatch] = useFormState(
-  //     sendBookingFormWithRecaptcha,
-  //     initialState,
-  //   );
-  // } else {
-  //   console.log('issue setting up recaptcha');
-  // }
-
-  // console.log('binding recaptcha token', gRecaptchaToken);
-  // const sendBookingFormWithRecaptcha = sendBookingForm.bind(
-  //   null,
-  //   gRecaptchaToken,
-  // );
-  const [state, dispatch] = useFormState(
-    sendBookingFormWithRecaptcha,
-    initialState,
-  );
+  const [state, setState] = useState(initialState);
 
   // checkbox group isInvalid doesn't play nice with server state validation
   const [availabilityInvalid, setAvailabilityInvalid] = useState(true);
@@ -101,17 +61,30 @@ export default function BookingForm() {
     setFiles(e.target.files);
   }
 
+  const { executeRecaptcha } = useGoogleReCaptcha();
+  async function onSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget);
+
+    let token;
+    if (executeRecaptcha) {
+      token = await executeRecaptcha();
+    }
+
+    const res = await sendBookingForm(token ?? 'no token', state, formData);
+    setState(res);
+  }
+
   return (
     <form
       id="booking-form"
-      action={dispatch}
+      onSubmit={onSubmit}
       noValidate // Handling all validation on server-side
     >
       <div className="rounded-md bg-gray-50 p-4 md:p-6">
         <Input
           id="email"
           name="email"
-          // TODO: isRequired doesn't play nice with server state validation
           label="Email *"
           type="email"
           isInvalid={!!state.errors?.email}
@@ -156,8 +129,6 @@ export default function BookingForm() {
           name="phone"
           label="Phone Number *"
           type="tel"
-          // pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}"
-          // className="my-2"
           isInvalid={!!state.errors?.phone}
           errorMessage="Please provide a phone number"
         />
@@ -178,7 +149,6 @@ export default function BookingForm() {
           id="type"
           name="type"
           label="Custom or Flash *"
-          // className="my-2"
           isInvalid={!!state.errors?.type}
           errorMessage="Please select a tattoo type"
         >
@@ -196,14 +166,10 @@ export default function BookingForm() {
           label="Design Description *"
           description="If you're looking to get flash, please give me the name of the flash
           *** I do not tattoo other people's art without permission (except big corp aka manga, tv screen caps etc). If you purchased a tattoo ticket, I need proof of purchase."
-          // className="my-2"
           isInvalid={!!state.errors?.description}
           errorMessage="If you're looking to get flash, please give me the name of the flash
           *** I do not tattoo other people's art without permission (except big corp aka manga, tv screen caps etc). If you purchased a tattoo ticket, I need proof of purchase."
         />
-
-        {/* <label htmlFor="file">Choose file to upload</label>
-        <input type="file" id="file" name="file" multiple accept="image/*" /> */}
 
         <div className="my-2">
           <label className="mb-2 block text-base text-gray-500">
@@ -242,7 +208,6 @@ export default function BookingForm() {
           type="number"
           min="1"
           step="0.1"
-          // className="my-2"
           isInvalid={!!state.errors?.size}
           errorMessage="Please provide a tattoo size"
         />
@@ -302,7 +267,6 @@ export default function BookingForm() {
           id="previousClient"
           name="previousClient"
           label="Have I tattooed you before *"
-          // className="mb-2"
           isInvalid={!!state.errors?.previousClient}
           errorMessage="Please answer the above"
         >
