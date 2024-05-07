@@ -17,6 +17,7 @@ import { createReadStream, writeFile, writeFileSync } from 'fs';
 import { GoogleAuth, OAuth2Client } from 'google-auth-library';
 import { google } from 'googleapis';
 import { Readable } from 'node:stream';
+import path from 'path';
 
 const BookingFormSchema = z.object({
   email: z.string().email(),
@@ -26,7 +27,7 @@ const BookingFormSchema = z.object({
   instagram: z.string(),
   phone: z.string().min(10),
   dob: z.string().date(),
-  type: z.enum(['custom', 'flash']),
+  type: z.enum(['Custom', 'Flash']),
   description: z.string().min(1),
   size: z.coerce.number().gt(0),
   placement: z.string().min(1),
@@ -50,7 +51,7 @@ type ParsedBookingForm = {
   instagram: string;
   phone: string;
   dob: string;
-  type: 'custom' | 'flash';
+  type: 'Custom' | 'Flash';
   description: string;
   size: number;
   placement: string;
@@ -80,8 +81,6 @@ export async function sendBookingForm(
     throw new Error('Failed Recaptcha');
   }
 
-  const files = formData.getAll('file') as File[];
-
   const validatedFields = await BookingFormSchema.safeParseAsync({
     email: formData.get('email'),
     name: formData.get('name'),
@@ -103,26 +102,37 @@ export async function sendBookingForm(
     moreInfo: formData.get('moreInfo'),
   });
 
-  console.log(validatedFields);
+  // console.log(validatedFields);
   if (!validatedFields.success) {
-    console.log(validatedFields.error.flatten().fieldErrors);
+    console.error(
+      'Form validation failed',
+      validatedFields.error.flatten().fieldErrors,
+    );
     return {
       errors: validatedFields.error.flatten().fieldErrors,
       message: 'Form validation failed.',
     };
   }
 
+  // validate file size
+  const files = formData.getAll('file') as File[];
+  if (files.some((file) => file.size > 5242880)) {
+    // some files greater than drive upload limit of 5 MB
+    console.error('File upload too large');
+    return {
+      message: 'File upload must be smaller than 5 MB',
+      errors: { file: ['File upload must be smaller than 5 MB'] },
+    };
+  }
+
   // process data
   const emailHtml = generateEmailFormResponseHtml(validatedFields.data);
-  console.log(emailHtml);
+  // console.log(emailHtml);
 
   // TODO: preview without email
-  writeFileSync(
-    'C:/Users/andyr/projects/jacquie-tattoos/email-test.html',
-    emailHtml,
-  );
+  writeFileSync(path.join(process.cwd(), 'email-test.html'), emailHtml);
 
-  // await uploadToDrive(files);
+  // await uploadToDrive(files, validatedFields.data.name);
   // await appendToSheet(validatedFields.data, []);
 
   // if (await sendMail(emailHtml, files)) {
@@ -218,7 +228,7 @@ function generateEmailFormResponseHtml(validatedFieldsData: ParsedBookingForm) {
 async function checkRecaptcha(gRecaptchaToken: string) {
   const gRecaptchaSecretKey = process.env.RECAPTCHA_SECRET_KEY;
   if (!gRecaptchaSecretKey) {
-    console.log('missing google recaptcha secret key');
+    console.error('missing google recaptcha secret key');
     return false;
   }
 
@@ -248,12 +258,12 @@ async function checkRecaptcha(gRecaptchaToken: string) {
       return false;
     }
   } catch (e) {
-    console.log('issue sending request to recaptcha service');
+    console.error('issue sending request to recaptcha service', e);
     return false;
   }
 }
 
-async function uploadToDrive(files?: File[]) {
+async function uploadToDrive(files?: File[], fileNameSuffix?: string) {
   if (!files?.length || files[0].size <= 0) {
     // no files to upload
     return;
@@ -272,7 +282,7 @@ async function uploadToDrive(files?: File[]) {
   const fileIds = [];
   for (const file of files) {
     const requestBody = {
-      name: file.name,
+      name: `${file.name} - ${fileNameSuffix}`,
       fields: 'id',
       parents: [`${process.env.GOOGLE_DRIVE_PARENT_FOLDER_ID}`],
     };
@@ -291,10 +301,8 @@ async function uploadToDrive(files?: File[]) {
       });
       console.log('File Id:', file.data.id);
       fileIds.push(file.data.id);
-    } catch (err) {
-      // TODO(developer) - Handle error
-      console.log('issue uploading to drive');
-      throw err;
+    } catch (e) {
+      console.error('issue uploading to drive', e, requestBody, media);
     }
   }
 
@@ -367,9 +375,7 @@ async function appendToSheet(
       requestBody,
     });
     console.log(`${result.data.updates?.updatedCells} cells appended.`);
-    return result;
-  } catch (err) {
-    // TODO (developer) - Handle exception
-    throw err;
+  } catch (e) {
+    console.error('issue appending to sheet', e, requestBody);
   }
 }

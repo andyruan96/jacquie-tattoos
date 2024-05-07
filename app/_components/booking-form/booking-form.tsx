@@ -20,6 +20,7 @@ import {
 } from 'react';
 import Image from 'next/image';
 import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
+import clsx from 'clsx';
 
 export default function BookingForm() {
   const initialState: State = { message: '', errors: {} };
@@ -152,10 +153,10 @@ export default function BookingForm() {
           isInvalid={!!state.errors?.type}
           errorMessage="Please select a tattoo type"
         >
-          <SelectItem value="custom" key="custom">
+          <SelectItem value="Custom" key="Custom">
             Custom
           </SelectItem>
-          <SelectItem value="flash" key="flash">
+          <SelectItem value="Flash" key="Flash">
             Flash
           </SelectItem>
         </Select>
@@ -176,17 +177,28 @@ export default function BookingForm() {
             Reference Pics
           </label>
           <input
-            className="w-full cursor-pointer rounded border bg-white text-sm font-semibold text-gray-400 file:mr-4 file:cursor-pointer file:border-0 file:bg-gray-100 file:px-4 file:py-3 file:text-gray-500 file:hover:bg-gray-200"
+            className={clsx(
+              'w-full cursor-pointer rounded border bg-white text-sm font-semibold text-gray-400 file:mr-4 file:cursor-pointer file:border-0 file:bg-gray-100 file:px-4 file:py-3 file:text-gray-500 file:hover:bg-gray-200',
+              { 'bg-red-100 text-red-500': state.errors && state.errors.file },
+            )}
             id="file"
             name="file"
             type="file"
             accept="image/*"
             multiple
             onChange={onSelectReferenceFiles}
+            aria-describedby="fileDescription fileError"
           />
-          <p className="mt-2 text-xs text-gray-400">
-            Please attach 3-5 references for <b>custom</b> pieces.
-          </p>
+          {state.errors && state.errors.file ? (
+            <p id="fileDescription" className="mt-2 text-xs text-red-400">
+              Please attach only files up to 5 MB in size.
+            </p>
+          ) : (
+            <p id="fileDescription" className="mt-2 text-xs text-gray-400">
+              Please attach 3-5 references for <b>custom</b> pieces.
+            </p>
+          )}
+
           <div className="flex gap-2">
             {previewUrls.map((previewUrl, index) => (
               <Image
