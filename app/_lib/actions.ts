@@ -146,7 +146,7 @@ export async function sendBookingForm(
   //   };
   // }
 
-  return { message: 'Form Processed Successfully.', errors: {} };
+  redirect('/booking/confirm');
 }
 
 async function sendMail(html: string, files?: File[]) {

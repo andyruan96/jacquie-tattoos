@@ -8,16 +8,9 @@ import {
   SelectItem,
   Textarea,
 } from '@nextui-org/react';
-import { useFormState } from 'react-dom';
 import { Input, DateInput } from '@nextui-org/react';
 import { State, sendBookingForm } from '@/app/_lib/actions';
-import {
-  ChangeEvent,
-  FormEvent,
-  useCallback,
-  useEffect,
-  useState,
-} from 'react';
+import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import Image from 'next/image';
 import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
 import clsx from 'clsx';
@@ -73,7 +66,9 @@ export default function BookingForm() {
     }
 
     const res = await sendBookingForm(token ?? 'no token', state, formData);
-    setState(res);
+    if (res) {
+      setState(res);
+    }
   }
 
   return (
@@ -179,7 +174,7 @@ export default function BookingForm() {
           <input
             className={clsx(
               'w-full cursor-pointer rounded border bg-white text-sm font-semibold text-gray-400 file:mr-4 file:cursor-pointer file:border-0 file:bg-gray-100 file:px-4 file:py-3 file:text-gray-500 file:hover:bg-gray-200',
-              { 'bg-red-100 text-red-500': state.errors && state.errors.file },
+              { 'bg-red-100 text-red-500': !!state.errors?.file },
             )}
             id="file"
             name="file"
@@ -189,7 +184,7 @@ export default function BookingForm() {
             onChange={onSelectReferenceFiles}
             aria-describedby="fileDescription fileError"
           />
-          {state.errors && state.errors.file ? (
+          {!!state.errors?.file ? (
             <p id="fileDescription" className="mt-2 text-xs text-red-400">
               Please attach only files up to 5 MB in size.
             </p>
@@ -290,7 +285,7 @@ export default function BookingForm() {
           </SelectItem>
         </Select>
 
-        <div className="flex gap-2">
+        <div className="flex flex-col gap-2 md:flex-row">
           <Select
             id="medical1"
             name="medical1"
