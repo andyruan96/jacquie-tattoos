@@ -14,6 +14,7 @@ import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import Image from 'next/image';
 import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
 import clsx from 'clsx';
+import { useCrash } from '@/app/_lib/use-crash';
 
 export default function BookingForm() {
   const initialState: State = { message: '', errors: {} };
@@ -56,7 +57,8 @@ export default function BookingForm() {
   }
 
   const { executeRecaptcha } = useGoogleReCaptcha();
-  async function onSubmit(event: FormEvent<HTMLFormElement>) {
+  const crash = useCrash();
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
 
@@ -65,16 +67,20 @@ export default function BookingForm() {
       token = await executeRecaptcha();
     }
 
-    const res = await sendBookingForm(token ?? 'no token', state, formData);
-    if (res) {
-      setState(res);
+    try {
+      const res = await sendBookingForm(token ?? 'no token', state, formData);
+      if (res.message) {
+        setState(res);
+      }
+    } catch (e) {
+      crash(e);
     }
   }
 
   return (
     <form
       id="booking-form"
-      onSubmit={onSubmit}
+      onSubmit={handleSubmit}
       noValidate // Handling all validation on server-side
     >
       <div className="rounded-md bg-gray-50 p-4 md:p-6">
