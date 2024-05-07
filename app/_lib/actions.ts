@@ -13,7 +13,10 @@ import {
 } from './email-template';
 import Mail from 'nodemailer/lib/mailer';
 import sanitize from 'sanitize-html';
-import { writeFile, writeFileSync } from 'fs';
+import { createReadStream, writeFile, writeFileSync } from 'fs';
+import { GoogleAuth, OAuth2Client } from 'google-auth-library';
+import { google } from 'googleapis';
+import { Readable } from 'node:stream';
 
 const BookingFormSchema = z.object({
   email: z.string().email(),
@@ -77,9 +80,6 @@ export async function sendBookingForm(
     throw new Error('Failed Recaptcha');
   }
 
-  console.log(formData);
-  console.log(formData.getAll('file'));
-
   const files = formData.getAll('file') as File[];
 
   const validatedFields = await BookingFormSchema.safeParseAsync({
@@ -121,6 +121,9 @@ export async function sendBookingForm(
     'C:/Users/andyr/projects/jacquie-tattoos/email-test.html',
     emailHtml,
   );
+
+  // await uploadToDrive(files);
+  // await appendToSheet(validatedFields.data, []);
 
   // if (await sendMail(emailHtml, files)) {
   //   // revalidatePath('/booking');
@@ -166,14 +169,6 @@ async function sendMail(html: string, files?: File[]) {
 
     mailOptions.attachments = attachments;
   }
-
-  // transporter.sendMail(mailOptions, (error, info) => {
-  //   if (error) {
-  //     console.error("Error sending email: ", error);
-  //   } else {
-  //     console.log("Email sent: ", info.response);
-  //   }
-  // });
 
   try {
     const res = await transporter.sendMail(mailOptions);
@@ -245,11 +240,136 @@ async function checkRecaptcha(gRecaptchaToken: string) {
     if (response.success && response.score > 0.5) {
       console.log(`recaptcha passed with score of ${response.score}`);
       return true;
+    } else {
+      console.log(
+        `failed recaptcha with score of  ${response.score}`,
+        response,
+      );
+      return false;
     }
   } catch (e) {
     console.log('issue sending request to recaptcha service');
     return false;
   }
+}
 
-  return false;
+async function uploadToDrive(files?: File[]) {
+  if (!files?.length || files[0].size <= 0) {
+    // no files to upload
+    return;
+  }
+
+  const auth = new OAuth2Client({
+    clientId: process.env.GOOGLE_DRIVE_CLIENT_ID,
+    clientSecret: process.env.GOOGLE_DRIVE_CLIENT_SECRET,
+    credentials: {
+      refresh_token: process.env.GOOGLE_DRIVE_REFRESH_TOKEN,
+    },
+  });
+
+  const service = google.drive({ version: 'v3', auth: auth });
+
+  const fileIds = [];
+  for (const file of files) {
+    const requestBody = {
+      name: file.name,
+      fields: 'id',
+      parents: [`${process.env.GOOGLE_DRIVE_PARENT_FOLDER_ID}`],
+    };
+
+    const buffer = Buffer.from(await file.arrayBuffer());
+
+    const media = {
+      mimeType: file.type,
+      body: Readable.from(buffer),
+    };
+
+    try {
+      const file = await service.files.create({
+        requestBody,
+        media: media,
+      });
+      console.log('File Id:', file.data.id);
+      fileIds.push(file.data.id);
+    } catch (err) {
+      // TODO(developer) - Handle error
+      console.log('issue uploading to drive');
+      throw err;
+    }
+  }
+
+  return fileIds;
+}
+
+const sheetValueOrderConfig = [
+  () => new Date().toISOString(),
+  'email',
+  'name',
+  'pronoun',
+  'email',
+  'instagram',
+  'phone',
+  'dob',
+  'type',
+  'description',
+  // ref pics
+  ({ fileIds }) =>
+    (fileIds as string[])
+      .map((fileId) => `https://drive.google.com/open?id=${fileId}`)
+      .join(),
+  'size',
+  'placement',
+  'availability',
+  'time',
+  'budget',
+  'previousClient',
+  'medical1',
+  'medical2',
+  'moreInfo',
+  'preferredName',
+  // visiting outside van
+  () => '',
+] satisfies (
+  | keyof ParsedBookingForm
+  | ((args: Record<string, unknown>) => string)
+)[];
+
+async function appendToSheet(
+  validatedFieldsData: ParsedBookingForm,
+  fileIds: string[],
+) {
+  const auth = new OAuth2Client({
+    clientId: process.env.GOOGLE_DRIVE_CLIENT_ID,
+    clientSecret: process.env.GOOGLE_DRIVE_CLIENT_SECRET,
+    credentials: {
+      refresh_token: process.env.GOOGLE_DRIVE_REFRESH_TOKEN,
+    },
+  });
+
+  const service = google.sheets({ version: 'v4', auth });
+  const values = [
+    sheetValueOrderConfig.map((key) => {
+      if (typeof key === 'string') {
+        return validatedFieldsData[key]?.toString() ?? '';
+      } else {
+        return key({ validatedFieldsData, fileIds });
+      }
+    }),
+  ];
+
+  const requestBody = { values };
+
+  try {
+    const result = await service.spreadsheets.values.append({
+      spreadsheetId: process.env.GOOGLE_SHEETS_RESPONSES_ID,
+      range: process.env.GOOGLE_SHEETS_APPEND_RANGE,
+      valueInputOption: 'RAW',
+      requestBody,
+    });
+    console.log(`${result.data.updates?.updatedCells} cells appended.`);
+    return result;
+  } catch (err) {
+    // TODO (developer) - Handle exception
+    throw err;
+  }
 }
