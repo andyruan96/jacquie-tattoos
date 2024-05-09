@@ -32,3 +32,8 @@ body {
     text-wrap: balance;
   }
 }
+
+/* consider moving below if we starting adding more */
+.swiper-slide-thumb-active {
+  opacity: 1;
+}

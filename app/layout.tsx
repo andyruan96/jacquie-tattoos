@@ -5,6 +5,13 @@ import SideNav from '@/app/_components/sidenav/sidenav';
 import { config } from '@fortawesome/fontawesome-svg-core';
 import '@fortawesome/fontawesome-svg-core/styles.css';
 import GoogleRecaptchaWrapper from '@/app/_components/google-recaptcha-wrapper/goole-recaptcha-wrapper';
+
+import 'swiper/css';
+import 'swiper/css/free-mode';
+import 'swiper/css/navigation';
+import 'swiper/css/thumbs';
+import 'swiper/css/effect-coverflow';
+
 config.autoAddCss = false;
 
 const inter = Inter({ subsets: ['latin'] });
