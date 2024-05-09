@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useRef, useState } from 'react';
+import { MutableRefObject, useEffect, useRef, useState } from 'react';
 import { GalleryItem, fetchIGFeed } from '@/app/_lib/gallery-actions';
 import Image from 'next/image';
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -25,7 +25,6 @@ export default function Carousel({
     async function fetchIGItems() {
       const galleryItems = await fetchIGFeed();
       setGalleryItems(galleryItems);
-      console.log('set gallery items', galleryItems);
     }
 
     if (!carouselItems) {
@@ -38,27 +37,21 @@ export default function Carousel({
   const [thumbsSwiper, setThumbsSwiper] = useState<SwiperType | null>(null);
 
   const hash = useHash();
-  const thumbsSwiperRef = useRef<SwiperType>();
   const mainSwiperRef = useRef<SwiperType>();
   const [swipersInit, setSwipersInit] = useState(false);
   useEffect(() => {
     if (
       !swipersInit &&
-      thumbsSwiperRef &&
-      thumbsSwiperRef.current &&
       mainSwiperRef &&
       mainSwiperRef.current &&
       galleryItems.length &&
       hash
     ) {
       const slideToIndex = galleryItems.findIndex((item) => item.id === hash);
-
       mainSwiperRef.current.slideTo(slideToIndex);
-      thumbsSwiperRef.current.update(); // calling after slide manipulation sets the active thumb
-
       setSwipersInit(true);
     }
-  }, [thumbsSwiperRef, galleryItems, mainSwiperRef, hash]);
+  }, [galleryItems, hash, mainSwiperRef]);
 
   return (
     <div className="h-[80vh] overflow-hidden md:h-full">
@@ -94,7 +87,7 @@ export default function Carousel({
             slidesPerView: 3,
           },
         }}
-        onBeforeInit={(swiper) => (mainSwiperRef.current = swiper)}
+        onAfterInit={(swiper) => (mainSwiperRef.current = swiper)}
       >
         {galleryItems.map((item) => {
           return (
@@ -113,50 +106,51 @@ export default function Carousel({
           );
         })}
       </Swiper>
-      <Swiper
-        onSwiper={setThumbsSwiper}
-        centeredSlides={true}
-        slidesPerView={3}
-        freeMode={true}
-        watchSlidesProgress={true}
-        mousewheel={true}
-        modules={[FreeMode, Navigation, Thumbs, Mousewheel, HashNavigation]}
-        className="mySwiper h-1/6 md:h-1/3"
-        hashNavigation={{
-          watchState: true, // HashNavigation has the side effect of centering the thumbs swiper (probably triggers a handler)
-        }}
-        breakpoints={{
-          768: {
-            slidesPerView: 5,
-          },
-          1024: {
-            slidesPerView: 10,
-          },
-          1536: {
-            slidesPerView: 15,
-          },
-        }}
-        onBeforeInit={(swiper) => (thumbsSwiperRef.current = swiper)}
-      >
-        {galleryItems.map((item) => {
-          return (
-            <SwiperSlide
-              key={item.id}
-              data-hash={item.id}
-              className="opacity-40"
-            >
-              <Image
-                width="0"
-                height="0"
-                sizes="100vw"
-                className="h-[100px] w-[100px] rounded-lg object-cover"
-                src={item.src}
-                alt="A piece of work or post on Jacquie's Instagram"
-              />
-            </SwiperSlide>
-          );
-        })}
-      </Swiper>
+      {swipersInit ? (
+        <Swiper
+          onSwiper={setThumbsSwiper}
+          centeredSlides={true}
+          slidesPerView={3}
+          freeMode={true}
+          watchSlidesProgress={true}
+          mousewheel={true}
+          modules={[FreeMode, Navigation, Thumbs, Mousewheel, HashNavigation]}
+          className="mySwiper h-1/6 md:h-1/3"
+          hashNavigation={{
+            watchState: true, // HashNavigation has the side effect of centering the thumbs swiper (probably triggers a handler)
+          }}
+          breakpoints={{
+            768: {
+              slidesPerView: 5,
+            },
+            1024: {
+              slidesPerView: 10,
+            },
+            1536: {
+              slidesPerView: 15,
+            },
+          }}
+        >
+          {galleryItems.map((item) => {
+            return (
+              <SwiperSlide
+                key={item.id}
+                data-hash={item.id}
+                className="opacity-40"
+              >
+                <Image
+                  width="0"
+                  height="0"
+                  sizes="100vw"
+                  className="h-[100px] w-[100px] rounded-lg object-cover"
+                  src={item.src}
+                  alt="A piece of work or post on Jacquie's Instagram"
+                />
+              </SwiperSlide>
+            );
+          })}
+        </Swiper>
+      ) : null}
     </div>
   );
 }

@@ -11,8 +11,13 @@ const useHash = () => {
 
   useEffect(() => {
     const handleHashChange = () => {
-      setHash(getHash());
+      // current use case only cares about the first hash
+      if (!hash) {
+        setHash(getHash());
+        window.removeEventListener('hashchange', handleHashChange);
+      }
     };
+    handleHashChange(); // checks the first hash before any changes are detected
     window.addEventListener('hashchange', handleHashChange);
     return () => {
       window.removeEventListener('hashchange', handleHashChange);
