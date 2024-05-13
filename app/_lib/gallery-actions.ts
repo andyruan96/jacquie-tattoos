@@ -1,6 +1,11 @@
 'use server';
 
-export type GalleryItem = { id: string; src: string; permalink: string };
+export type GalleryItem = {
+  id: string;
+  src: string;
+  permalink: string;
+  videoSrc?: string;
+};
 
 export async function fetchIGFeed(): Promise<GalleryItem[]> {
   await refreshIGToken();
@@ -36,11 +41,14 @@ export async function fetchIGFeed(): Promise<GalleryItem[]> {
       return [];
     }
 
-    const ret = response.data.map((data: { [x: string]: string }) => ({
-      src: data['thumbnail_url'] ?? data['media_url'],
-      permalink: data['permalink'],
-      id: data['id'],
-    }));
+    const ret: GalleryItem[] = response.data.map(
+      (data: { [x: string]: string }) => ({
+        src: data['thumbnail_url'] ?? data['media_url'],
+        permalink: data['permalink'],
+        id: data['id'],
+        videoSrc: data['thumbnail_url'] ? data['media_url'] : undefined,
+      }),
+    );
     // console.log(ret);
     return ret;
     // map out the response to something well defined

@@ -39,19 +39,19 @@ export default function Carousel({
   const hash = useHash();
   const mainSwiperRef = useRef<SwiperType>();
   const [swipersInit, setSwipersInit] = useState(false);
-  useEffect(() => {
-    if (
-      !swipersInit &&
-      mainSwiperRef &&
-      mainSwiperRef.current &&
-      galleryItems.length &&
-      hash
-    ) {
-      const slideToIndex = galleryItems.findIndex((item) => item.id === hash);
-      mainSwiperRef.current.slideTo(slideToIndex);
-      setSwipersInit(true);
-    }
-  }, [galleryItems, hash, mainSwiperRef]);
+  // useEffect(() => {
+  //   if (
+  //     !swipersInit &&
+  //     mainSwiperRef &&
+  //     mainSwiperRef.current &&
+  //     galleryItems.length &&
+  //     hash
+  //   ) {
+  //     const slideToIndex = galleryItems.findIndex((item) => item.id === hash);
+  //     mainSwiperRef.current.slideTo(slideToIndex);
+  //     setSwipersInit(true);
+  //   }
+  // }, [galleryItems, hash, mainSwiperRef]);
 
   return (
     <div className="h-[80vh] overflow-hidden md:h-full">
@@ -65,7 +65,7 @@ export default function Carousel({
           Thumbs,
           EffectCoverflow,
           Mousewheel,
-          HashNavigation,
+          // HashNavigation,
         ]}
         thumbs={{ swiper: thumbsSwiper }}
         effect={'coverflow'}
@@ -77,9 +77,9 @@ export default function Carousel({
           slideShadows: false,
         }}
         mousewheel={true}
-        hashNavigation={{
-          watchState: false,
-        }}
+        // hashNavigation={{
+        //   watchState: false,
+        // }}
         className="mySwiper2 mb-10 h-4/6 md:mb-20 md:h-2/3"
         breakpoints={{
           768: { slidesPerView: 2 },
@@ -114,11 +114,17 @@ export default function Carousel({
           freeMode={true}
           watchSlidesProgress={true}
           mousewheel={true}
-          modules={[FreeMode, Navigation, Thumbs, Mousewheel, HashNavigation]}
+          modules={[
+            FreeMode,
+            Navigation,
+            Thumbs,
+            Mousewheel,
+            // HashNavigation
+          ]}
           className="mySwiper h-1/6 md:h-1/3"
-          hashNavigation={{
-            watchState: true, // HashNavigation has the side effect of centering the thumbs swiper (probably triggers a handler)
-          }}
+          // hashNavigation={{
+          //   watchState: true, // HashNavigation has the side effect of centering the thumbs swiper (probably triggers a handler)
+          // }}
           breakpoints={{
             768: {
               slidesPerView: 5,
