@@ -54,7 +54,7 @@ export default function Gallery() {
         {galleryItems.map((item) => {
           return (
             // <Link href={`/gallery/p#${item.id}`} key={item.id}>
-            <Link href={`/gallery/p`} key={item.id}>
+            <Link href={`/gallery/${item.id}`} key={item.id}>
               <Image
                 width="360"
                 height="360"

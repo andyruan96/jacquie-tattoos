@@ -11,8 +11,6 @@ export async function fetchIGFeed(): Promise<GalleryItem[]> {
   await refreshIGToken();
 
   const baseUrl = 'https://graph.instagram.com/me/media';
-  // const query = `fields=id,caption,media_type,media_url,permalink,thumbnail_url`
-
   const params = new URLSearchParams();
   params.set(
     'fields',
@@ -33,10 +31,7 @@ export async function fetchIGFeed(): Promise<GalleryItem[]> {
       headers: { 'Content-Type': 'application/json' },
     });
 
-    // console.log('res', res);
     const response = await res.json();
-    // console.log('response', response);
-
     if (!response || !response.data) {
       return [];
     }
@@ -49,9 +44,7 @@ export async function fetchIGFeed(): Promise<GalleryItem[]> {
         videoSrc: data['thumbnail_url'] ? data['media_url'] : undefined,
       }),
     );
-    // console.log(ret);
     return ret;
-    // map out the response to something well defined
   } catch (e) {
     console.log('issue fetching ig feed', e);
     return [];
@@ -86,5 +79,48 @@ async function refreshIGToken() {
   } catch (e) {
     console.log('issue refreshing ig token', e);
     return false;
+  }
+}
+
+export async function fetchIGItem(
+  mediaId: string,
+): Promise<GalleryItem | null> {
+  await refreshIGToken();
+
+  const baseUrl = `https://graph.instagram.com/${mediaId}`;
+  const params = new URLSearchParams();
+  params.set(
+    'fields',
+    'id,caption,media_type,media_url,permalink,thumbnail_url',
+  );
+  params.set(
+    'access_token',
+    process.env.IG_BASIC_DISPLAY_API_ACCESS_TOKEN ?? '',
+  );
+
+  let res;
+  try {
+    const url = `${baseUrl}?${params.toString()}`;
+    console.log('url', url);
+    res = await fetch(url, {
+      mode: 'cors',
+      headers: { 'Content-Type': 'application/json' },
+    });
+
+    const response = await res.json();
+    if (!response) {
+      return null;
+    }
+
+    const ret = {
+      src: response['thumbnail_url'] ?? response['media_url'],
+      permalink: response['permalink'],
+      id: response['id'],
+      videoSrc: response['thumbnail_url'] ? response['media_url'] : undefined,
+    };
+    return ret;
+  } catch (e) {
+    console.log('issue fetching ig item', e, mediaId);
+    return null;
   }
 }

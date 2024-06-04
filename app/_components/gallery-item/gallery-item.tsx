@@ -14,13 +14,14 @@ export default function GalleryItemComponent({
     <>
       {galleryItem.videoSrc ? (
         <video
-          width="320"
-          height="240"
-          //   controls
+          controls
           muted
           preload="metadata"
           poster={galleryItem.src}
           className={className}
+          onClick={(e) => {
+            e.stopPropagation();
+          }}
         >
           <source
             src={galleryItem.videoSrc}

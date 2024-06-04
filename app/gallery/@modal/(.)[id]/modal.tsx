@@ -11,7 +11,12 @@ export function Modal({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     if (!dialogRef.current?.open) {
       dialogRef.current?.showModal();
+      document.body.style.overflow = 'hidden';
     }
+
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
   }, []);
 
   function onDismiss() {
@@ -19,10 +24,9 @@ export function Modal({ children }: { children: React.ReactNode }) {
   }
 
   return createPortal(
-    <div className="modal-backdrop">
+    <div className="modal-backdrop" onClick={onDismiss}>
       <dialog ref={dialogRef} className="modal" onClose={onDismiss}>
         {children}
-        <button onClick={onDismiss} className="close-button" />
       </dialog>
     </div>,
     document.getElementById('modal-root')!,

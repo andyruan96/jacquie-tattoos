@@ -106,7 +106,7 @@ export default function Carousel({
           );
         })}
       </Swiper>
-      {swipersInit ? (
+      {swipersInit && (
         <Swiper
           onSwiper={setThumbsSwiper}
           centeredSlides={true}
@@ -156,7 +156,7 @@ export default function Carousel({
             );
           })}
         </Swiper>
-      ) : null}
+      )}
     </div>
   );
 }

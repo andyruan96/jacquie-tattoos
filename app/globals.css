@@ -52,20 +52,20 @@ body {
 }
 
 .modal {
-  width: 80%;
-  max-width: 500px;
-  height: auto;
-  max-height: 500px;
+  overflow: hidden;
+  width: fit-content;
+  height: 100%;
   border: none;
   border-radius: 12px;
   background-color: white;
-  padding: 20px;
   position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
   font-size: 48px;
   font-weight: 500;
+
+  background: transparent;
 }
 
 .close-button {
