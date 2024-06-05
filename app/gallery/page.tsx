@@ -4,7 +4,8 @@ import { GalleryItem, fetchIGFeed } from '@/app/_lib/gallery-actions';
 import Image from 'next/image';
 import { useCrash } from '@/app/_lib/use-crash';
 import Link from 'next/link';
-import GalleryItemComponent from '../_components/gallery-item/gallery-item';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faFilm, faVideo } from '@fortawesome/free-solid-svg-icons';
 
 export default function Gallery() {
   const crash = useCrash();
@@ -54,7 +55,11 @@ export default function Gallery() {
         {galleryItems.map((item) => {
           return (
             // <Link href={`/gallery/p#${item.id}`} key={item.id}>
-            <Link href={`/gallery/${item.id}`} key={item.id}>
+            <Link
+              href={`/gallery/${item.id}`}
+              key={item.id}
+              className="relative"
+            >
               <Image
                 width="0"
                 height="0"
@@ -71,6 +76,18 @@ export default function Gallery() {
                 galleryItem={item}
                 className="h-[360px] w-auto transform rounded-lg brightness-90 transition will-change-auto hover:brightness-100"
               /> */}
+              {item.type === 'CAROUSEL_ALBUM' && (
+                <FontAwesomeIcon
+                  icon={faFilm}
+                  className="absolute right-2 top-2 z-50 text-xl text-white"
+                />
+              )}
+              {item.type === 'VIDEO' && (
+                <FontAwesomeIcon
+                  icon={faVideo}
+                  className="absolute right-2 top-2 z-50 text-xl text-white"
+                />
+              )}
             </Link>
           );
         })}
