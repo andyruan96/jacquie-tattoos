@@ -8,7 +8,6 @@ import GoogleRecaptchaWrapper from '@/app/_components/google-recaptcha-wrapper/g
 
 import 'swiper/css';
 import 'swiper/css/free-mode';
-import 'swiper/css/navigation';
 import 'swiper/css/thumbs';
 import 'swiper/css/effect-coverflow';
 

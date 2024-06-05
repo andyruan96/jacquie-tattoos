@@ -5,8 +5,8 @@ import Link from 'next/link';
 
 export default function Photo({ params: { id } }: { params: { id: string } }) {
   return (
-    <div className="flex max-w-screen-md flex-col gap-2">
-      <Link href="/gallery" className="flex items-center">
+    <div className="w-auto">
+      <Link href="/gallery">
         <FontAwesomeIcon
           className="text-xl"
           icon={faCaretLeft}
@@ -15,8 +15,9 @@ export default function Photo({ params: { id } }: { params: { id: string } }) {
           Back To Gallery
         </span>
       </Link>
-
-      <InstagramItem mediaId={id}></InstagramItem>
+      <div className="mt-2 h-[85vh]">
+        <InstagramItem mediaId={id}></InstagramItem>
+      </div>
     </div>
   );
 }

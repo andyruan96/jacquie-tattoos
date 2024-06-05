@@ -1,9 +1,12 @@
 'use server';
 
+type MediaType = 'IMAGE' | 'VIDEO' | 'CAROUSEL_ALBUM';
+
 export type GalleryItem = {
   id: string;
   src: string;
   permalink: string;
+  type: MediaType;
   videoSrc?: string;
 };
 
@@ -36,13 +39,8 @@ export async function fetchIGFeed(): Promise<GalleryItem[]> {
       return [];
     }
 
-    const ret: GalleryItem[] = response.data.map(
-      (data: { [x: string]: string }) => ({
-        src: data['thumbnail_url'] ?? data['media_url'],
-        permalink: data['permalink'],
-        id: data['id'],
-        videoSrc: data['thumbnail_url'] ? data['media_url'] : undefined,
-      }),
+    const ret = response.data.map((data: Record<string, string>) =>
+      mapToGalleryItem(data),
     );
     return ret;
   } catch (e) {
@@ -112,15 +110,60 @@ export async function fetchIGItem(
       return null;
     }
 
-    const ret = {
-      src: response['thumbnail_url'] ?? response['media_url'],
-      permalink: response['permalink'],
-      id: response['id'],
-      videoSrc: response['thumbnail_url'] ? response['media_url'] : undefined,
-    };
+    const ret = mapToGalleryItem(response);
     return ret;
   } catch (e) {
     console.log('issue fetching ig item', e, mediaId);
     return null;
   }
+}
+
+export async function fetchIGCarouselAlbum(
+  parentMediaId: string,
+): Promise<GalleryItem[]> {
+  await refreshIGToken();
+
+  const baseUrl = `https://graph.instagram.com/${parentMediaId}/children`;
+  const params = new URLSearchParams();
+  params.set(
+    'fields',
+    'id,media_type,media_url,permalink,thumbnail_url', // "caption" field not available for children
+  );
+  params.set(
+    'access_token',
+    process.env.IG_BASIC_DISPLAY_API_ACCESS_TOKEN ?? '',
+  );
+
+  let res;
+  try {
+    const url = `${baseUrl}?${params.toString()}`;
+    console.log('url', url);
+    res = await fetch(url, {
+      mode: 'cors',
+      headers: { 'Content-Type': 'application/json' },
+    });
+
+    const response = await res.json();
+    if (!response || !response.data) {
+      return [];
+    }
+
+    const ret = response.data.map((data: Record<string, string>) =>
+      mapToGalleryItem(data),
+    );
+    return ret;
+  } catch (e) {
+    console.log('issue fetching ig carousel album', e, parentMediaId);
+    return [];
+  }
+}
+
+function mapToGalleryItem(igResponse: Record<string, string>): GalleryItem {
+  return {
+    src: igResponse['thumbnail_url'] ?? igResponse['media_url'],
+    permalink: igResponse['permalink'],
+    id: igResponse['id'],
+    type: igResponse['media_type'] as MediaType,
+    videoSrc: igResponse['thumbnail_url'] ? igResponse['media_url'] : undefined,
+  };
 }
