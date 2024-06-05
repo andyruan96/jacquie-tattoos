@@ -33,7 +33,7 @@ export default function Carousel({
             e.stopPropagation();
             sliderRef.current?.slidePrev();
           }}
-          className="absolute left-0 z-50"
+          className="absolute left-0 z-20"
         >
           <FontAwesomeIcon
             className="text-4xl text-white"
@@ -66,7 +66,7 @@ export default function Carousel({
             e.stopPropagation();
             sliderRef.current?.slideNext();
           }}
-          className="absolute right-0 z-50"
+          className="absolute right-0 z-20"
         >
           <FontAwesomeIcon
             className="text-4xl text-white"

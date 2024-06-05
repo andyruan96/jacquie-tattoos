@@ -79,13 +79,13 @@ export default function Gallery() {
               {item.type === 'CAROUSEL_ALBUM' && (
                 <FontAwesomeIcon
                   icon={faFilm}
-                  className="absolute right-2 top-2 z-50 text-xl text-white"
+                  className="absolute right-2 top-2 z-20 text-xl text-white"
                 />
               )}
               {item.type === 'VIDEO' && (
                 <FontAwesomeIcon
                   icon={faVideo}
-                  className="absolute right-2 top-2 z-50 text-xl text-white"
+                  className="absolute right-2 top-2 z-20 text-xl text-white"
                 />
               )}
             </Link>

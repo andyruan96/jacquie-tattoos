@@ -58,7 +58,7 @@ export default function SideNav() {
             aria-label={isMobileMenuOpen ? 'Close menu' : 'Open menu'}
           />
         </NavbarContent>
-        <NavbarMenu id="navMenu" className="h-60 bg-amber-400 pt-6">
+        <NavbarMenu id="navMenu" className="z-50 h-60 bg-amber-400 pt-6">
           {NavLinks.map((navLink, index) => (
             <NavbarMenuItem
               key={`${navLink}-${index}`}
