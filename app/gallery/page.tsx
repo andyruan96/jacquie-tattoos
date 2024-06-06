@@ -61,8 +61,8 @@ export default function Gallery() {
               className="relative"
             >
               <Image
-                width="0"
-                height="0"
+                width="360"
+                height="360"
                 sizes="100vw"
                 // className="h-[360px] w-auto rounded-lg"
                 className="h-[360px] w-auto transform rounded-lg brightness-90 transition will-change-auto hover:brightness-100"

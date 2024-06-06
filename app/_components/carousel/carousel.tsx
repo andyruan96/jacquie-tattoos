@@ -54,7 +54,7 @@ export default function Carousel({
                 <div className="flex h-full items-center justify-center">
                   <GalleryItemComponent
                     galleryItem={item}
-                    className="h-full w-auto rounded-lg object-contain"
+                    className="h-auto max-h-[85vh] w-auto rounded-lg object-contain"
                   />
                 </div>
               </SwiperSlide>
