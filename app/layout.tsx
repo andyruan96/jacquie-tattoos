@@ -37,6 +37,7 @@ export default function RootLayout({
               {children}
             </div>
           </div>
+          <div id="modal-root"></div>
         </GoogleRecaptchaWrapper>
       </body>
     </html>
