@@ -32,10 +32,12 @@ export default function InstagramItem({ mediaId }: { mediaId: string }) {
         return <Carousel carouselItems={igCarouselAlbum}></Carousel>;
       } else {
         return (
-          <GalleryItemComponent
-            galleryItem={igItem}
-            className="h-fit max-h-full w-auto rounded-lg object-contain"
-          ></GalleryItemComponent>
+          <div className="flex justify-center">
+            <GalleryItemComponent
+              galleryItem={igItem}
+              className="h-auto w-full rounded-lg object-contain md:max-h-[85vh]"
+            ></GalleryItemComponent>
+          </div>
         );
       }
     }
