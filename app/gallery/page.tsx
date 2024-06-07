@@ -22,7 +22,7 @@ export default function Gallery() {
 
   return (
     <>
-      <div className="flex flex-wrap justify-center gap-2">
+      <div className="flex flex-col items-center justify-center gap-2 md:flex-row md:flex-wrap">
         {/* <video
           width="320"
           height="240"
@@ -65,7 +65,7 @@ export default function Gallery() {
                 height="360"
                 sizes="100vw"
                 // className="h-[360px] w-auto rounded-lg"
-                className="h-[360px] w-auto transform rounded-lg brightness-90 transition will-change-auto hover:brightness-100"
+                className="h-auto w-[360px] transform rounded-lg brightness-90 transition will-change-auto hover:brightness-100 md:h-[360px] md:w-auto"
                 // style={{ transform: 'translate3d(0, 0, 0)' }}
                 src={item.src}
                 alt="A piece of work or post on Jacquie's Instagram"
