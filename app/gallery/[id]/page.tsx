@@ -1,7 +1,7 @@
 'use client';
 
 import InstagramItem from '@/app/_components/instagram-item/instagram-item';
-import GalleryContext from '@/app/_lib/gallery-context';
+import { GalleryContext } from '@/app/_lib/gallery-context';
 import { useRouter } from 'next/navigation';
 import { Suspense } from 'react';
 

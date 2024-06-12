@@ -8,6 +8,7 @@ export type GalleryItem = {
   permalink: string;
   type: MediaType;
   videoSrc?: string;
+  caption: string;
 };
 
 export async function fetchIGFeed(): Promise<GalleryItem[]> {
@@ -165,5 +166,6 @@ function mapToGalleryItem(igResponse: Record<string, string>): GalleryItem {
     id: igResponse['id'],
     type: igResponse['media_type'] as MediaType,
     videoSrc: igResponse['thumbnail_url'] ? igResponse['media_url'] : undefined,
+    caption: igResponse['caption'] ?? '',
   };
 }

@@ -27,19 +27,21 @@ export default function Carousel({
 
   return (
     <>
-      <div className="relative flex h-full items-center justify-center overflow-hidden">
-        <button
-          onClick={(e) => {
-            e.stopPropagation();
-            sliderRef.current?.slidePrev();
-          }}
-          className="absolute left-0 z-20"
-        >
-          <FontAwesomeIcon
-            className="text-4xl text-white"
-            icon={faCircleChevronLeft}
-          ></FontAwesomeIcon>
-        </button>
+      <div className="relative flex h-fit items-center justify-center overflow-hidden">
+        {galleryItems.length > 1 && (
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              sliderRef.current?.slidePrev();
+            }}
+            className="absolute left-0 z-20"
+          >
+            <FontAwesomeIcon
+              className="text-4xl text-white"
+              icon={faCircleChevronLeft}
+            ></FontAwesomeIcon>
+          </button>
+        )}
         <Swiper
           slidesPerView={1}
           centeredSlides={true}
@@ -61,18 +63,20 @@ export default function Carousel({
             );
           })}
         </Swiper>
-        <button
-          onClick={(e) => {
-            e.stopPropagation();
-            sliderRef.current?.slideNext();
-          }}
-          className="absolute right-0 z-20"
-        >
-          <FontAwesomeIcon
-            className="text-4xl text-white"
-            icon={faCircleChevronRight}
-          ></FontAwesomeIcon>
-        </button>
+        {galleryItems.length > 1 && (
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              sliderRef.current?.slideNext();
+            }}
+            className="absolute right-0 z-20"
+          >
+            <FontAwesomeIcon
+              className="text-4xl text-white"
+              icon={faCircleChevronRight}
+            ></FontAwesomeIcon>
+          </button>
+        )}
       </div>
     </>
   );

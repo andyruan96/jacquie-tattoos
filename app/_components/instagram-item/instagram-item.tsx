@@ -6,8 +6,8 @@ import {
   fetchIGItem,
 } from '@/app/_lib/gallery-actions';
 import { useEffect, useState } from 'react';
-import GalleryItemComponent from '../gallery-item/gallery-item';
 import Carousel from '@/app/_components/carousel/carousel';
+import { CaptionContext } from '@/app/_lib/gallery-context';
 
 export default function InstagramItem({ mediaId }: { mediaId: string }) {
   const [igItem, setIgItem] = useState<GalleryItem | null>();
@@ -18,30 +18,21 @@ export default function InstagramItem({ mediaId }: { mediaId: string }) {
       setIgItem(igItem);
 
       if (igItem) {
-        const carouselAlbum = await fetchIGCarouselAlbum(igItem.id);
-        setIgCarouselAlbum(carouselAlbum);
+        if (igItem.type === 'CAROUSEL_ALBUM') {
+          const carouselAlbum = await fetchIGCarouselAlbum(igItem.id);
+          setIgCarouselAlbum(carouselAlbum);
+        } else {
+          setIgCarouselAlbum([igItem]);
+        }
       }
     }
 
     loadIgItem();
   }, []);
 
-  function renderIgItem() {
-    if (igItem) {
-      if (igItem.type === 'CAROUSEL_ALBUM') {
-        return <Carousel carouselItems={igCarouselAlbum}></Carousel>;
-      } else {
-        return (
-          <div className="flex justify-center">
-            <GalleryItemComponent
-              galleryItem={igItem}
-              className="h-auto w-full rounded-lg object-contain md:max-h-[85vh]"
-            ></GalleryItemComponent>
-          </div>
-        );
-      }
-    }
-  }
-
-  return renderIgItem();
+  return (
+    <CaptionContext.Provider value={igItem?.caption ?? ''}>
+      <Carousel carouselItems={igCarouselAlbum}></Carousel>
+    </CaptionContext.Provider>
+  );
 }
