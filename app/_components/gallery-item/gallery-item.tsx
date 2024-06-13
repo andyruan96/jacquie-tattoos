@@ -23,26 +23,23 @@ export default function GalleryItemComponent({
 
   const captionRef = useRef<HTMLDivElement>(null);
 
-  function showCaption() {
+  function toggleCaption() {
     console.log('show caption');
     if (captionRef.current) {
-      if (captionRef.current.classList.contains('md:animate-fadeIn')) {
+      if (captionRef.current.classList.contains('animate-fadeIn')) {
         // fadeout
-        captionRef.current.classList.remove('animate-fadeInMobile');
-        captionRef.current.classList.remove('md:animate-fadeIn');
+        captionRef.current.classList.remove('animate-fadeIn');
 
         captionRef.current.classList.add('opacity-0');
         captionRef.current.classList.add('animate-fadeOut');
 
         setTimeout(() => {
-          captionRef?.current?.classList.remove('md:bottom-[-5px]');
+          captionRef?.current?.classList.remove('bottom-[-5px]');
         }, 500);
       } else {
         // fadein
-
-        captionRef.current.classList.add('animate-fadeInMobile');
-        captionRef.current.classList.add('md:animate-fadeIn');
-        captionRef.current.classList.add('md:bottom-[-5px]');
+        captionRef.current.classList.add('animate-fadeIn');
+        captionRef.current.classList.add('bottom-[-5px]');
 
         captionRef.current.classList.remove('opacity-0');
         captionRef.current.classList.remove('animate-fadeOut');
@@ -89,7 +86,11 @@ export default function GalleryItemComponent({
                 ></FontAwesomeIcon>
               </Button>
             )}
-            <Button isIconOnly aria-label="Show caption" onClick={showCaption}>
+            <Button
+              isIconOnly
+              aria-label="Show caption"
+              onClick={toggleCaption}
+            >
               <FontAwesomeIcon
                 icon={faMessage}
                 className="text-xl"
@@ -127,7 +128,11 @@ export default function GalleryItemComponent({
                 ></FontAwesomeIcon>
               </Button>
             )}
-            <Button isIconOnly aria-label="Show caption" onClick={showCaption}>
+            <Button
+              isIconOnly
+              aria-label="Show caption"
+              onClick={toggleCaption}
+            >
               <FontAwesomeIcon
                 icon={faMessage}
                 className="text-xl"
@@ -145,11 +150,11 @@ export default function GalleryItemComponent({
         </div>
       )}
       <Card
-        className="fill-mode-forwards relative mt-2 opacity-0 md:absolute"
+        className="fill-mode-forwards absolute w-full opacity-0"
         ref={captionRef}
       >
-        <CardBody className="">
-          <p className="text-lg">{caption}</p>
+        <CardBody>
+          <p className="text-sm">{caption}</p>
         </CardBody>
       </Card>
     </div>
