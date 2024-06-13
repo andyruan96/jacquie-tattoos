@@ -29,7 +29,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <GoogleRecaptchaWrapper>
-          <div className="flex h-screen flex-col md:flex-row md:overflow-hidden">
+          <div className="flex min-h-[100vh] flex-col md:flex-row">
             <div className="w-full flex-none text-white md:w-56 md:bg-amber-400 md:px-10 md:pt-5">
               <SideNav />
             </div>

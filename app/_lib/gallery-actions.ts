@@ -11,7 +11,9 @@ export type GalleryItem = {
   caption: string;
 };
 
-export async function fetchIGFeed(): Promise<GalleryItem[]> {
+export async function fetchIGFeed(
+  after?: string,
+): Promise<{ items: GalleryItem[]; after: string }> {
   await refreshIGToken();
 
   const baseUrl = 'https://graph.instagram.com/me/media';
@@ -26,6 +28,10 @@ export async function fetchIGFeed(): Promise<GalleryItem[]> {
   );
   params.set('limit', '30');
 
+  if (after) {
+    params.set('after', after);
+  }
+
   let res;
   try {
     const url = `${baseUrl}?${params.toString()}`;
@@ -37,16 +43,22 @@ export async function fetchIGFeed(): Promise<GalleryItem[]> {
 
     const response = await res.json();
     if (!response || !response.data) {
-      return [];
+      return { items: [], after: '' };
     }
 
-    const ret = response.data.map((data: Record<string, string>) =>
+    const items = response.data.map((data: Record<string, string>) =>
       mapToGalleryItem(data),
     );
+
+    const ret = {
+      items,
+      after: response.paging.cursors.after,
+    };
+
     return ret;
   } catch (e) {
     console.log('issue fetching ig feed', e);
-    return [];
+    return { items: [], after: '' };
   }
 }
 
