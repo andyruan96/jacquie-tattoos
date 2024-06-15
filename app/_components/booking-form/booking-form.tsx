@@ -2,6 +2,8 @@
 
 import {
   Button,
+  Card,
+  CardBody,
   Checkbox,
   CheckboxGroup,
   Select,
@@ -83,7 +85,8 @@ export default function BookingForm() {
       onSubmit={handleSubmit}
       noValidate // Handling all validation on server-side
     >
-      <div className="rounded-md bg-gray-50 p-4 md:p-6">
+      <div className="rounded-lg bg-porsche p-4 md:p-6">
+        <h5 className="mb-3 text-xl font-semibold text-ironstone">Personal</h5>
         <Input
           id="email"
           name="email"
@@ -91,6 +94,9 @@ export default function BookingForm() {
           type="email"
           isInvalid={!!state.errors?.email}
           errorMessage="Please provide a valid email"
+          classNames={{
+            inputWrapper: ['shadow-md'],
+          }}
         />
 
         <div className="flex gap-2">
@@ -101,12 +107,18 @@ export default function BookingForm() {
             type="text"
             isInvalid={!!state.errors?.name}
             errorMessage="Please provide a name"
+            classNames={{
+              inputWrapper: ['shadow-md'],
+            }}
           />
           <Input
             id="preferredName"
             name="preferredName"
             label="Preferred Name"
             type="text"
+            classNames={{
+              inputWrapper: ['shadow-md'],
+            }}
           />
         </div>
 
@@ -116,6 +128,9 @@ export default function BookingForm() {
           label="Pronoun"
           type="text"
           className="my-2"
+          classNames={{
+            inputWrapper: ['shadow-md'],
+          }}
         />
 
         <Input
@@ -124,6 +139,10 @@ export default function BookingForm() {
           type="text"
           label="Instagram Handle"
           description="Email will be how I contact you, but if for some reason I'm having trouble contacting you, I may try over IG. I will not use this for any personal reasons. Strictly business."
+          classNames={{
+            inputWrapper: ['shadow-md'],
+            description: ['text-coconut-cream'],
+          }}
         />
 
         <Input
@@ -133,26 +152,38 @@ export default function BookingForm() {
           type="tel"
           isInvalid={!!state.errors?.phone}
           errorMessage="Please provide a phone number"
+          classNames={{
+            inputWrapper: ['shadow-md'],
+          }}
         />
 
         <DateInput
           id="dob"
           name="dob"
           label="Date of Birth *"
-          className="mb-10"
           description="Must be 18+"
           isInvalid={!!state.errors?.dob}
           errorMessage={
             !!state.errors?.dob ? 'Please enter your date of birth' : null
           }
+          classNames={{
+            inputWrapper: ['shadow-md'],
+            description: ['text-coconut-cream'],
+          }}
         />
 
+        <h5 className="mb-3 mt-10 text-xl font-semibold text-ironstone">
+          Tattoo Design
+        </h5>
         <Select
           id="type"
           name="type"
           label="Custom or Flash *"
           isInvalid={!!state.errors?.type}
           errorMessage="Please select a tattoo type"
+          classNames={{
+            trigger: ['shadow-md'],
+          }}
         >
           <SelectItem value="Custom" key="Custom">
             Custom
@@ -171,6 +202,10 @@ export default function BookingForm() {
           isInvalid={!!state.errors?.description}
           errorMessage="If you're looking to get flash, please give me the name of the flash
           *** I do not tattoo other people's art without permission (except big corp aka manga, tv screen caps etc). If you purchased a tattoo ticket, I need proof of purchase."
+          classNames={{
+            inputWrapper: ['shadow-md'],
+            description: ['text-coconut-cream'],
+          }}
         />
 
         <div className="my-2">
@@ -179,7 +214,7 @@ export default function BookingForm() {
           </label>
           <input
             className={clsx(
-              'w-full cursor-pointer rounded border bg-white text-sm font-semibold text-gray-400 file:mr-4 file:cursor-pointer file:border-0 file:bg-gray-100 file:px-4 file:py-3 file:text-gray-500 file:hover:bg-gray-200',
+              'w-full cursor-pointer rounded border bg-white text-sm font-semibold text-gray-400 shadow-md file:mr-4 file:cursor-pointer file:border-0 file:bg-gray-100 file:px-4 file:py-3 file:text-gray-500 file:hover:bg-gray-200',
               { 'bg-red-100 text-red-500': !!state.errors?.file },
             )}
             id="file"
@@ -195,7 +230,7 @@ export default function BookingForm() {
               Please attach only files up to 5 MB in size.
             </p>
           ) : (
-            <p id="fileDescription" className="mt-2 text-xs text-gray-400">
+            <p id="fileDescription" className="mt-2 text-xs text-coconut-cream">
               Please attach 3-5 references for <b>custom</b> pieces.
             </p>
           )}
@@ -223,6 +258,9 @@ export default function BookingForm() {
           step="0.1"
           isInvalid={!!state.errors?.size}
           errorMessage="Please provide a tattoo size"
+          classNames={{
+            inputWrapper: ['shadow-md'],
+          }}
         />
 
         <Input
@@ -230,31 +268,39 @@ export default function BookingForm() {
           name="placement"
           label="Body Placement *"
           type="text"
-          className="mb-10"
           isInvalid={!!state.errors?.placement}
           errorMessage="Please provide the tattoo's placement"
+          classNames={{
+            inputWrapper: ['shadow-md'],
+          }}
         />
 
-        <CheckboxGroup
-          id="availability"
-          name="availability"
-          label="Availability *"
-          className="mb-3"
-          description="First appointment starts at 10:30AM.
+        <h5 className="mb-3 mt-10 text-xl font-semibold text-ironstone">
+          Scheduling & Cost
+        </h5>
+        <Card className="mb-3 bg-gray-100 shadow-md">
+          <CardBody>
+            <CheckboxGroup
+              id="availability"
+              name="availability"
+              label="Availability *"
+              description="First appointment starts at 10:30AM.
       Last appointment starts at 4PM.
-      ALL APPOINTMENTS MUST FINISH BY 5 PM EXCEPT ON SUNDAYS & MONDAYS. I share a station with another artist"
-          isInvalid={!!state.errors?.availability && availabilityInvalid}
-          errorMessage="Please select your availability"
-          onValueChange={(value) => {
-            setAvailabilityInvalid(value.length < 1);
-          }}
-        >
-          <Checkbox value="Sunday">Sunday</Checkbox>
-          <Checkbox value="Monday">Monday</Checkbox>
-          <Checkbox value="Wednesday">Wednesday</Checkbox>
-          <Checkbox value="Thursday">Thursday</Checkbox>
-          <Checkbox value="Friday">Friday</Checkbox>
-        </CheckboxGroup>
+      ALL APPOINTMENTS MUST FINISH BY 5 PM EXCEPT ON SUNDAYS & MONDAYS. I share a station with another artist."
+              isInvalid={!!state.errors?.availability && availabilityInvalid}
+              errorMessage="Please select your availability"
+              onValueChange={(value) => {
+                setAvailabilityInvalid(value.length < 1);
+              }}
+            >
+              <Checkbox value="Sunday">Sunday</Checkbox>
+              <Checkbox value="Monday">Monday</Checkbox>
+              <Checkbox value="Wednesday">Wednesday</Checkbox>
+              <Checkbox value="Thursday">Thursday</Checkbox>
+              <Checkbox value="Friday">Friday</Checkbox>
+            </CheckboxGroup>
+          </CardBody>
+        </Card>
 
         <Input
           id="time"
@@ -263,6 +309,10 @@ export default function BookingForm() {
           type="text"
           description="If you're only available before or after a certain time on specific days, let me know. If nothing is written here, I'll assume you're available all day for the days you've selected above."
           className="mb-3"
+          classNames={{
+            inputWrapper: ['shadow-md'],
+            description: ['text-coconut-cream'],
+          }}
         />
 
         <Input
@@ -271,17 +321,26 @@ export default function BookingForm() {
           label="Budget *"
           type="text"
           description="I'll let you know if I think the idea you want will be over your budget. It's an estimate at best, but for custom pieces, sometimes it can take longer than I expect. "
-          className="mb-10"
           isInvalid={!!state.errors?.budget}
           errorMessage="Please provide your budget"
+          classNames={{
+            inputWrapper: ['shadow-md'],
+            description: ['text-coconut-cream'],
+          }}
         />
 
+        <h5 className="mb-3 mt-10 text-xl font-semibold text-ironstone">
+          Misc.
+        </h5>
         <Select
           id="previousClient"
           name="previousClient"
           label="Have I tattooed you before *"
           isInvalid={!!state.errors?.previousClient}
           errorMessage="Please answer the above"
+          classNames={{
+            trigger: ['shadow-md'],
+          }}
         >
           <SelectItem value="Yes" key="Yes">
             Yup
@@ -291,13 +350,16 @@ export default function BookingForm() {
           </SelectItem>
         </Select>
 
-        <div className="flex flex-col gap-2 md:flex-row">
+        <div className="my-3 flex flex-col gap-3 lg:flex-row">
           <Select
             id="medical1"
             name="medical1"
             label="Do you have any medical conditions or allergies? *"
             isInvalid={!!state.errors?.medical1}
             errorMessage="Please answer the above"
+            classNames={{
+              trigger: ['shadow-md'],
+            }}
           >
             <SelectItem value="Yes" key="Yes">
               Yes
@@ -310,8 +372,11 @@ export default function BookingForm() {
           <Input
             id="medical2"
             name="medical2"
-            label="If you answered yes to the previous question, please list your condition"
+            label="If you answered yes to the previous question, please list your condition here"
             type="text"
+            classNames={{
+              inputWrapper: ['shadow-md'],
+            }}
           />
         </div>
 
@@ -319,10 +384,17 @@ export default function BookingForm() {
           id="moreInfo"
           name="moreInfo"
           label="Anything else I should know about?"
+          classNames={{
+            inputWrapper: ['shadow-md'],
+          }}
         />
-      </div>
-      <div className="ml-6 flex gap-4">
-        <Button type="submit">Submit</Button>
+
+        <Button
+          className="mt-3 bg-ironstone font-bold text-coconut-cream shadow-md"
+          type="submit"
+        >
+          Submit
+        </Button>
       </div>
     </form>
   );

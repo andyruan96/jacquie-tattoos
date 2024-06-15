@@ -5,6 +5,7 @@ import {
   faBandAid,
   faBandage,
   faCamera,
+  faEnvelope,
   faHouseChimney,
   faLink,
   faLocationDot,
@@ -22,6 +23,11 @@ export const NavLinks: NavLink[] = [
     label: 'Home',
     href: '/',
     icon: faHouseChimney,
+  },
+  {
+    label: 'Booking',
+    href: '/booking',
+    icon: faEnvelope,
   },
   {
     label: 'Gallery',

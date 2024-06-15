@@ -10,7 +10,7 @@ export default function LinkIcon({
 }) {
   return (
     <a
-      className="flex h-8 w-8 items-center justify-center rounded-full border-2 hover:border-orange-600 hover:text-orange-600"
+      className="hover:border-summer-blue hover:text-summer-blue flex h-8 w-8 items-center justify-center rounded-full border-2 border-coconut-cream"
       target="__blank"
       href={href}
     >
