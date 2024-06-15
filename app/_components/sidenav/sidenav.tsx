@@ -34,22 +34,24 @@ export default function SideNav() {
   const pathname = usePathname();
 
   return (
-    <div className="flex flex-row justify-between md:flex-col">
+    <div className="sticky top-0 flex flex-row justify-between md:flex-col">
       <Link className="md:mb-10" href="/">
         <Image
-          src="/logo.jpg"
+          src="/logo.png"
           alt="logo"
           height="150"
           width="150"
           className="h-16 w-16 object-contain md:h-36 md:w-36"
         />
-        <figcaption className="hidden md:block">hello world!</figcaption>
+        <figcaption className="hidden text-center md:block">
+          hello world!
+        </figcaption>
       </Link>
 
       {/* mobile */}
       <Navbar
         onMenuOpenChange={setIsMobileMenuOpen}
-        className="w-16 rounded-xl text-black md:hidden"
+        className="text-summer-blue w-16 rounded-xl bg-summer-green md:hidden"
         disableAnimation
         isMenuOpen={isMobileMenuOpen}
       >
@@ -58,7 +60,10 @@ export default function SideNav() {
             aria-label={isMobileMenuOpen ? 'Close menu' : 'Open menu'}
           />
         </NavbarContent>
-        <NavbarMenu id="navMenu" className="z-50 h-60 bg-amber-400 pt-6">
+        <NavbarMenu
+          id="navMenu"
+          className="z-50 h-60 bg-summer-green pt-6 text-coconut-cream"
+        >
           {NavLinks.map((navLink, index) => (
             <NavbarMenuItem
               key={`${navLink}-${index}`}
@@ -66,9 +71,9 @@ export default function SideNav() {
             >
               <Link
                 className={clsx(
-                  'col-span-6 col-start-3 grid w-full grid-cols-2 items-center gap-4 hover:text-orange-600',
+                  'hover:text-summer-blue col-span-6 col-start-3 grid w-full grid-cols-2 items-center gap-4',
                   {
-                    'text-orange-600': pathname === navLink.href,
+                    'text-summer-blue': pathname === navLink.href,
                   },
                 )}
                 href={navLink.href}
@@ -86,16 +91,16 @@ export default function SideNav() {
       </Navbar>
 
       {/* desktop */}
-      <div className="hidden md:block">
+      <div className="hidden text-coconut-cream md:block">
         <ul className="flex flex-col gap-1">
           {NavLinks.map((navLink, index) => (
             <li key={`${navLink}-${index}`}>
               <Link
                 href={navLink.href}
                 className={clsx(
-                  'grid grid-cols-6 items-center font-medium hover:text-orange-600',
+                  'hover:text-summer-blue grid grid-cols-6 items-center font-medium',
                   {
-                    'text-orange-600': pathname === navLink.href,
+                    'text-summer-blue': pathname === navLink.href,
                   },
                 )}
               >
@@ -108,13 +113,16 @@ export default function SideNav() {
             </li>
           ))}
         </ul>
-        <ul className="mt-4 flex justify-center gap-4">
+        <ul className="mt-10 flex justify-center gap-4">
           {SocialLinks.map((social, index) => (
             <li key={`${social.label}-${index}`}>
               <LinkIcon href={social.href} icon={social.icon} />
             </li>
           ))}
         </ul>
+        <div className="flex justify-center">
+          <p className="fixed bottom-5">goodbye world!</p>
+        </div>
       </div>
     </div>
   );

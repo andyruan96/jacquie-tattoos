@@ -29,11 +29,11 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <GoogleRecaptchaWrapper>
-          <div className="flex min-h-[100vh] flex-col md:flex-row">
-            <div className="w-full flex-none text-white md:w-56 md:bg-amber-400 md:px-10 md:pt-5">
+          <div className="flex min-h-screen flex-col md:flex-row">
+            <div className="w-full flex-none bg-summer-green text-white md:w-56 md:px-10 md:pt-5">
               <SideNav />
             </div>
-            <div className="flex-grow p-8 md:overflow-y-auto md:p-12">
+            <div className="flex-grow p-8 md:overflow-y-auto md:px-24 md:pt-12">
               {children}
             </div>
           </div>

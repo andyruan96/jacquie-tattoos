@@ -3,7 +3,7 @@ import Image from 'next/image';
 
 export default function Home() {
   return (
-    <div>
+    <>
       <div className="flex flex-col justify-center md:flex-row">
         <Image
           src="/artist.jpg"
@@ -11,10 +11,12 @@ export default function Home() {
           width="0"
           height="0"
           sizes="100vw"
-          className="h-[500px] w-full object-cover md:h-auto md:max-w-xl"
+          className="h-[500px] w-full object-cover md:h-auto md:max-w-xl md:rounded-lg"
         />
-        <div className="flex h-full flex-col gap-4 bg-black p-10 text-sm text-gray-400 md:-ml-20 md:mr-20 md:mt-20 md:max-w-lg md:max-w-xl">
-          <h3 className="text-lg font-bold text-white">JACQUIETATTOOS</h3>
+        <div className="flex h-full flex-col gap-4 bg-porsche p-10 text-sm text-coconut-cream md:-ml-20 md:mr-20 md:mt-20 md:max-w-lg md:max-w-xl md:rounded-3xl">
+          <h3 className="text-raw-sienna-dark text-lg font-bold">
+            JACQUIETATTOOS
+          </h3>
           <p>
             A tattoo artist based in Vancouver, Canada. Jacquie’s style can be
             described as illustrative black work, strongly influenced by anime
@@ -26,7 +28,10 @@ export default function Home() {
           </p>
           <p>Established in 2019.</p>
           <Link className="text-md flex-initial" href="/booking">
-            <Button radius="sm" className=" bg-white md:w-48">
+            <Button
+              radius="sm"
+              className="bg-ironstone font-bold text-coconut-cream md:w-48"
+            >
               BOOK NOW
             </Button>
           </Link>
@@ -35,8 +40,10 @@ export default function Home() {
       <div className="flex flex-col justify-center md:mt-10 md:flex-row">
         <div className="md:w- m-10 md:max-w-sm">
           <div className="flex flex-col gap-4 text-gray-600">
-            <h3 className="text-4xl text-black">Hobby Illustrator</h3>
-            <p>
+            <h3 className="text-4xl font-bold text-porsche">
+              Hobby Illustrator
+            </h3>
+            <p className="text-ironstone">
               On top of tattooing, Jacquie dabbles in character illustration as
               a stress outlet from tattoo art. She likes to make stickers,
               prints and other small merch on the side.
@@ -44,7 +51,7 @@ export default function Home() {
             <p>All illustrations are published under the pseudonym ’xaint’.</p>
             <Button
               radius="sm"
-              className="mt-8 flex-initial bg-black text-sm text-white md:w-48"
+              className="mt-8 flex-initial bg-black bg-porsche text-sm font-bold text-ironstone md:w-48"
             >
               ART INSTAGRAM
             </Button>
@@ -56,9 +63,9 @@ export default function Home() {
           width="0"
           height="0"
           sizes="100vw"
-          className="h-[500px] w-full object-cover md:h-auto md:w-2/3 md:max-w-xl"
+          className="h-[500px] w-full object-cover md:h-auto md:w-2/3 md:max-w-xl md:rounded-lg"
         />
       </div>
-    </div>
+    </>
   );
 }

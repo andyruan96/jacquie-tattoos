@@ -1,4 +1,4 @@
-import { nextui } from '@nextui-org/react';
+import { colors, nextui } from '@nextui-org/react';
 import type { Config } from 'tailwindcss';
 
 const config: Config = {
@@ -14,6 +14,20 @@ const config: Config = {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
         'gradient-conic':
           'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
+      },
+      colors: {
+        'summer-green': {
+          DEFAULT: '#9bbfa4',
+          dark: '#72a980',
+        },
+        'summer-blue': '#4e8575',
+        'coconut-cream': 'rgb(var(--background-start-rgb) / <alpha-value>)',
+        porsche: '#e99e57',
+        'raw-sienna': {
+          DEFAULT: '#d07746',
+          dark: '#c06542',
+        },
+        ironstone: '#7e483a',
       },
       // that is animation class
       animation: {
