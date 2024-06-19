@@ -29,6 +29,9 @@ const config: Config = {
         },
         ironstone: '#7e483a',
       },
+      boxShadow: {
+        bottom: '0 15px 10px -10px rgba(0, 0, 0, 0.1)',
+      },
       // that is animation class
       animation: {
         fadeIn: 'fadeIn .5s linear',

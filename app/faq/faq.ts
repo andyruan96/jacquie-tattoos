@@ -37,7 +37,7 @@ const faqs: FAQ[] = [
     ],
   },
   {
-    question: 'May i bring you a snack/drink? what would you like?',
+    question: 'May I bring you a snack/drink? what would you like?',
     answer: [
       'I am always touched by any sort of snacks/drink! You’re literally the sweetest person ever if you bring me anything, and I truly appreciate it. Please don’t feel pressured to though.',
       'I’m not picky when it comes to food. My only request is that it’s milk/cream free as I am lactose intolerant. A little bit of lactose is sometimes okay lol.',
