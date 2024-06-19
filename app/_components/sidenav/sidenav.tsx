@@ -34,7 +34,7 @@ export default function SideNav() {
   const pathname = usePathname();
 
   return (
-    <div className="flex flex-row justify-between md:flex-col">
+    <div className="sticky top-5 flex flex-row justify-between md:flex-col">
       <Link className="md:mb-10" href="/">
         <Image
           src="/logo.png"
