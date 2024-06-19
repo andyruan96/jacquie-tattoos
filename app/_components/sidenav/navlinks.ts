@@ -49,23 +49,17 @@ export const NavLinks: NavLink[] = [
     href: '/aftercare',
     icon: faBandage,
   },
-  // {
-  //   label: 'Other Social Media',
-  //   href: 'https://jacquietattoos.carrd.co/',
-  //   isExternal: true,
-  //   icon: faLink,
-  // },
 ];
 
 export const SocialLinks: NavLink[] = [
   {
     label: 'Instagram',
-    href: 'https://www.google.com',
+    href: 'https://www.instagram.com/jacquietattoos',
     icon: faInstagram,
   },
   {
     label: 'TikTok',
-    href: 'https://www.google.com',
+    href: 'https://www.tiktok.com/@jacquietattoos',
     icon: faTiktok,
   },
 ];

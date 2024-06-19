@@ -34,7 +34,7 @@ export default function SideNav() {
   const pathname = usePathname();
 
   return (
-    <div className="sticky top-0 flex flex-row justify-between md:flex-col">
+    <div className="flex flex-row justify-between md:flex-col">
       <Link className="md:mb-10" href="/">
         <Image
           src="/logo.png"
@@ -51,7 +51,7 @@ export default function SideNav() {
       {/* mobile */}
       <Navbar
         onMenuOpenChange={setIsMobileMenuOpen}
-        className="text-summer-blue w-16 rounded-xl bg-summer-green md:hidden"
+        className="w-auto bg-summer-green text-summer-blue md:hidden"
         disableAnimation
         isMenuOpen={isMobileMenuOpen}
       >
@@ -62,16 +62,16 @@ export default function SideNav() {
         </NavbarContent>
         <NavbarMenu
           id="navMenu"
-          className="z-50 h-60 bg-summer-green pt-6 text-coconut-cream"
+          className="z-50 h-80 rounded-b-lg bg-summer-green pt-6 text-coconut-cream"
         >
           {NavLinks.map((navLink, index) => (
             <NavbarMenuItem
               key={`${navLink}-${index}`}
-              className="grid grid-cols-8"
+              className="grid grid-cols-12"
             >
               <Link
                 className={clsx(
-                  'hover:text-summer-blue col-span-6 col-start-3 grid w-full grid-cols-2 items-center gap-4',
+                  'col-span-10 col-start-3 grid w-full grid-cols-2 items-center text-xl hover:text-summer-blue',
                   {
                     'text-summer-blue': pathname === navLink.href,
                   },
@@ -87,6 +87,23 @@ export default function SideNav() {
               </Link>
             </NavbarMenuItem>
           ))}
+          <NavbarMenuItem className="mt-2 grid grid-cols-6 gap-2">
+            {SocialLinks.map((social, index) => (
+              <div
+                key={`${social}-${index}`}
+                className={`col-span-2 col-start-${2 * (index + 1)}`}
+              >
+                <LinkIcon
+                  href={social.href}
+                  icon={social.icon}
+                  classNames={{
+                    linkWrapper: ['h-10', 'w-auto'],
+                    icon: ['text-3xl'],
+                  }}
+                />
+              </div>
+            ))}
+          </NavbarMenuItem>
         </NavbarMenu>
       </Navbar>
 
@@ -98,7 +115,7 @@ export default function SideNav() {
               <Link
                 href={navLink.href}
                 className={clsx(
-                  'hover:text-summer-blue grid grid-cols-6 items-center font-medium',
+                  'grid grid-cols-6 items-center font-medium hover:text-summer-blue',
                   {
                     'text-summer-blue': pathname === navLink.href,
                   },
