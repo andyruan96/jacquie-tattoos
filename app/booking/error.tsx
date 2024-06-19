@@ -15,13 +15,21 @@ export default function Error({
   }, [error]);
 
   return (
-    <main className="flex h-full flex-col items-center justify-center gap-5">
+    <main className="flex h-full flex-col items-center justify-center gap-5 text-ironstone">
       <h2 className="text-center">
         Oops, something went wrong! Please try again now or a little bit later.
+        Alternatively, try my{' '}
+        <a
+          className="text-porsche hover:underline"
+          href="https://forms.gle/6DqWrhELYcgvMByF6"
+          target="__blank"
+        >
+          google form
+        </a>{' '}
+        instead.
       </h2>
       <Button
-        // className="mt-4 rounded-md bg-blue-500 px-4 py-2 text-sm text-white transition-colors hover:bg-blue-400"
-        color="primary"
+        className="bg-ironstone text-coconut-cream"
         onClick={
           // Attempt to recover by trying to re-render the invoices route
           () => reset()
