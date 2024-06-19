@@ -2,11 +2,13 @@ import Image from 'next/image';
 
 export default function Aftercare() {
   return (
-    <div className="flex flex-col gap-6 lg:flex-row">
-      <div>
-        <h2 className="mb-5 text-2xl font-bold">Aftercare</h2>
+    <div className="flex flex-col gap-10 lg:flex-row">
+      <div className="text-ironstone">
+        <h2 className="mb-5 text-2xl font-bold text-raw-sienna-dark">
+          Aftercare
+        </h2>
 
-        <h3 className="uppercase">✦Second Skin</h3>
+        <h3 className="font-bold uppercase text-porsche">✦ Second Skin</h3>
         <p className="mb-3">
           Keep on for 3-5 days, but no longer than 5 days. If the second skin
           starts to peel, take off the second skin and give your tattoo a good
@@ -18,13 +20,15 @@ export default function Aftercare() {
           pools, beach or lake.
         </p>
 
-        <h3 className="uppercase">✦ Suran Wrap</h3>
+        <h3 className="font-bold uppercase text-porsche">✦ Suran Wrap</h3>
         <p className="mb-5">
           If we wrapped your tattoo in suran wrap, take it off once you get home
           and give your tattoo a wash.
         </p>
 
-        <h3 className="uppercase">✦ After bandage is removed</h3>
+        <h3 className="font-bold uppercase text-porsche">
+          ✦ After bandage is removed
+        </h3>
         <p className="mb-3">
           ✦ Use unscented soap, and aftercare cream/lotion to avoid irritation.
           Any irritation can lead to an infection.
@@ -59,7 +63,7 @@ export default function Aftercare() {
         width="0"
         height="0"
         sizes="100vw"
-        className="h-auto w-full object-contain lg:max-w-sm lg:self-start"
+        className="h-auto w-full rounded-lg object-contain lg:max-w-sm lg:self-start"
       />
     </div>
   );
