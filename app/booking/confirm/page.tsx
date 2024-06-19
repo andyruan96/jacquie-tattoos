@@ -1,7 +1,11 @@
+import { Button, Link } from '@nextui-org/react';
+
 export default function BookingConfirmed() {
   return (
-    <div className="flex h-full flex-col items-center justify-center gap-5">
-      <h2 className="text-center">THANK YOU!</h2>
+    <div className="flex h-full flex-col items-center justify-center gap-5 text-ironstone">
+      <h2 className="text-center text-4xl font-bold text-raw-sienna-dark">
+        THANK YOU!
+      </h2>
       <p>
         You&apos;ve reached the end of the form! You should get an email
         confirmation. Make sure that you have received it so that you can double
@@ -10,9 +14,9 @@ export default function BookingConfirmed() {
       <p>
         I&apos;ll get back to you in 3 days (max). If you don&apos;t hear back
         from me in 3 days time, feel free to poke me or re-send your booking
-        form. I may have missed it. I do be best to reply even if I am just
-        letting you know that I am not the right artist for you. That way
-        you&apos;re not left waiting.
+        form. I may have missed it. I do my best to reply even if just to let
+        you know that I am not the right artist for you. That way you&apos;re
+        not left waiting.
       </p>
       <p>
         That being said, if you&apos;ve changed your mind after I replied,
@@ -25,6 +29,11 @@ export default function BookingConfirmed() {
         have a no-show where I&apos;m wondering where you are.
       </p>
       <p>Looking forward to conversing with you. Have a great day.</p>
+      <Button className="bg-ironstone">
+        <Link href="/" className="text-coconut-cream">
+          Back To Home
+        </Link>
+      </Button>
     </div>
   );
 }
