@@ -95,7 +95,8 @@ export default function BookingForm() {
           isInvalid={!!state.errors?.email}
           errorMessage="Please provide a valid email"
           classNames={{
-            inputWrapper: ['shadow-md'],
+            inputWrapper: ['shadow-md', '!bg-white'],
+            errorMessage: ['md:text-sm', 'text-red-700'],
           }}
         />
 
@@ -108,7 +109,8 @@ export default function BookingForm() {
             isInvalid={!!state.errors?.name}
             errorMessage="Please provide a name"
             classNames={{
-              inputWrapper: ['shadow-md'],
+              inputWrapper: ['shadow-md', '!bg-white'],
+              errorMessage: ['md:text-sm', 'text-red-700'],
             }}
           />
           <Input
@@ -141,7 +143,7 @@ export default function BookingForm() {
           description="Email will be how I contact you, but if for some reason I'm having trouble contacting you, I may try over IG. I will not use this for any personal reasons. Strictly business."
           classNames={{
             inputWrapper: ['shadow-md'],
-            description: ['text-coconut-cream'],
+            description: ['text-coconut-cream', 'md:text-sm'],
           }}
         />
 
@@ -153,7 +155,8 @@ export default function BookingForm() {
           isInvalid={!!state.errors?.phone}
           errorMessage="Please provide a phone number"
           classNames={{
-            inputWrapper: ['shadow-md'],
+            inputWrapper: ['shadow-md', '!bg-white'],
+            errorMessage: ['md:text-sm', 'text-red-700'],
           }}
         />
 
@@ -167,8 +170,9 @@ export default function BookingForm() {
             !!state.errors?.dob ? 'Please enter your date of birth' : null
           }
           classNames={{
-            inputWrapper: ['shadow-md'],
-            description: ['text-coconut-cream'],
+            inputWrapper: ['shadow-md', '!bg-white'],
+            description: ['text-coconut-cream', 'md:text-sm'],
+            errorMessage: ['md:text-sm', 'text-red-700'],
           }}
         />
 
@@ -182,7 +186,8 @@ export default function BookingForm() {
           isInvalid={!!state.errors?.type}
           errorMessage="Please select a tattoo type"
           classNames={{
-            trigger: ['shadow-md'],
+            trigger: ['shadow-md', '!bg-white'],
+            errorMessage: ['md:text-sm', 'text-red-700'],
           }}
         >
           <SelectItem value="Custom" key="Custom">
@@ -203,8 +208,9 @@ export default function BookingForm() {
           errorMessage="If you're looking to get flash, please give me the name of the flash
           *** I do not tattoo other people's art without permission (except big corp aka manga, tv screen caps etc). If you purchased a tattoo ticket, I need proof of purchase."
           classNames={{
-            inputWrapper: ['shadow-md'],
-            description: ['text-coconut-cream'],
+            inputWrapper: ['shadow-md', '!bg-white'],
+            description: ['text-coconut-cream', 'md:text-sm'],
+            errorMessage: ['md:text-sm', 'text-red-700'],
           }}
         />
 
@@ -215,7 +221,7 @@ export default function BookingForm() {
           <input
             className={clsx(
               'w-full cursor-pointer rounded border bg-white text-sm font-semibold text-gray-400 shadow-md file:mr-4 file:cursor-pointer file:border-0 file:bg-gray-100 file:px-4 file:py-3 file:text-gray-500 file:hover:bg-gray-200',
-              { 'bg-red-100 text-red-500': !!state.errors?.file },
+              { 'text-red-700': !!state.errors?.file },
             )}
             id="file"
             name="file"
@@ -226,12 +232,19 @@ export default function BookingForm() {
             aria-describedby="fileDescription fileError"
           />
           {!!state.errors?.file ? (
-            <p id="fileDescription" className="mt-2 text-xs text-red-400">
+            <p
+              id="fileDescription"
+              className="mt-2 text-xs text-red-700 md:text-sm"
+            >
               Please attach only files up to 5 MB in size.
             </p>
           ) : (
-            <p id="fileDescription" className="mt-2 text-xs text-coconut-cream">
-              Please attach 3-5 references for <b>custom</b> pieces.
+            <p
+              id="fileDescription"
+              className="mt-2 text-xs text-coconut-cream md:text-sm"
+            >
+              Please attach 3-5 references for <b>custom</b> pieces. Up to 5 MB
+              in size each.
             </p>
           )}
 
@@ -259,7 +272,8 @@ export default function BookingForm() {
           isInvalid={!!state.errors?.size}
           errorMessage="Please provide a tattoo size"
           classNames={{
-            inputWrapper: ['shadow-md'],
+            inputWrapper: ['shadow-md', '!bg-white'],
+            errorMessage: ['md:text-sm', 'text-red-700'],
           }}
         />
 
@@ -271,7 +285,8 @@ export default function BookingForm() {
           isInvalid={!!state.errors?.placement}
           errorMessage="Please provide the tattoo's placement"
           classNames={{
-            inputWrapper: ['shadow-md'],
+            inputWrapper: ['shadow-md', '!bg-white'],
+            errorMessage: ['md:text-sm', 'text-red-700'],
           }}
         />
 
@@ -292,6 +307,10 @@ export default function BookingForm() {
               onValueChange={(value) => {
                 setAvailabilityInvalid(value.length < 1);
               }}
+              classNames={{
+                description: ['text-xs', 'md:text-sm'],
+                errorMessage: ['text-xs', 'md:text-sm'],
+              }}
             >
               <Checkbox value="Sunday">Sunday</Checkbox>
               <Checkbox value="Monday">Monday</Checkbox>
@@ -311,7 +330,7 @@ export default function BookingForm() {
           className="mb-3"
           classNames={{
             inputWrapper: ['shadow-md'],
-            description: ['text-coconut-cream'],
+            description: ['text-coconut-cream', 'md:text-sm'],
           }}
         />
 
@@ -324,8 +343,9 @@ export default function BookingForm() {
           isInvalid={!!state.errors?.budget}
           errorMessage="Please provide your budget"
           classNames={{
-            inputWrapper: ['shadow-md'],
-            description: ['text-coconut-cream'],
+            inputWrapper: ['shadow-md', '!bg-white'],
+            description: ['text-coconut-cream', 'md:text-sm'],
+            errorMessage: ['md:text-sm', 'text-red-700'],
           }}
         />
 
@@ -339,7 +359,8 @@ export default function BookingForm() {
           isInvalid={!!state.errors?.previousClient}
           errorMessage="Please answer the above"
           classNames={{
-            trigger: ['shadow-md'],
+            trigger: ['shadow-md', '!bg-white'],
+            errorMessage: ['md:text-sm', 'text-red-700'],
           }}
         >
           <SelectItem value="Yes" key="Yes">
@@ -358,7 +379,8 @@ export default function BookingForm() {
             isInvalid={!!state.errors?.medical1}
             errorMessage="Please answer the above"
             classNames={{
-              trigger: ['shadow-md'],
+              trigger: ['shadow-md', '!bg-white'],
+              errorMessage: ['md:text-sm', 'text-red-700'],
             }}
           >
             <SelectItem value="Yes" key="Yes">

@@ -119,6 +119,10 @@ body {
   max-width: 200px;
 }
 
+.grecaptcha-badge {
+  visibility: hidden !important;
+}
+
 @media (max-width: 600px) {
   .cards-container {
     grid-template-columns: 1fr;
