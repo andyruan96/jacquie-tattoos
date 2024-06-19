@@ -61,11 +61,7 @@ export default function GalleryItemComponent({
               e.stopPropagation();
             }}
           >
-            <source
-              src={galleryItem.videoSrc}
-              type="video/mp4"
-              aria-label="Video player"
-            />
+            <source src={galleryItem.videoSrc} type="video/mp4" />
             <Image
               width="0"
               height="0"

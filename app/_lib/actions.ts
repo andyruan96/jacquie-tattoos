@@ -1,8 +1,7 @@
 'use server';
 
-import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
-import { ZodParsedType, z } from 'zod';
+import { z } from 'zod';
 import nodemailer from 'nodemailer';
 import {
   EmailTemplate,

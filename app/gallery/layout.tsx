@@ -1,5 +1,3 @@
-import Link from 'next/link';
-
 export default function Layout({
   children,
   modal,
@@ -11,7 +9,6 @@ export default function Layout({
     <>
       {children}
       {modal}
-      {/* <div id="modal-root"></div> */}
     </>
   );
 }

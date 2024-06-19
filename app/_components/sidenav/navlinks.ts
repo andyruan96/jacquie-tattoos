@@ -2,12 +2,9 @@ import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 import { faInstagram, faTiktok } from '@fortawesome/free-brands-svg-icons';
 import { faCircleQuestion, faImage } from '@fortawesome/free-regular-svg-icons';
 import {
-  faBandAid,
   faBandage,
-  faCamera,
   faEnvelope,
   faHouseChimney,
-  faLink,
   faLocationDot,
 } from '@fortawesome/free-solid-svg-icons';
 

@@ -28,7 +28,7 @@ export default function InstagramItem({ mediaId }: { mediaId: string }) {
     }
 
     loadIgItem();
-  }, []);
+  }, [mediaId]);
 
   return (
     <CaptionContext.Provider value={igItem?.caption ?? ''}>

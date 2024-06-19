@@ -2,14 +2,11 @@
 import { useEffect, useState } from 'react';
 import { GalleryItem, fetchIGFeed } from '@/app/_lib/gallery-actions';
 import Image from 'next/image';
-import { useCrash } from '@/app/_lib/use-crash';
 import Link from 'next/link';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFilm, faSpinner, faVideo } from '@fortawesome/free-solid-svg-icons';
 
 export default function Gallery() {
-  const crash = useCrash();
-
   const [galleryItems, setGalleryItems] = useState<GalleryItem[]>([]);
   const [nextPage, setNextPage] = useState<string>('');
   const [debouncer, setDebouncer] = useState<NodeJS.Timeout | undefined>();
@@ -25,31 +22,31 @@ export default function Gallery() {
   }, []);
 
   useEffect(() => {
+    async function handleScroll() {
+      const debounceTime = 500;
+      const bottom =
+        Math.ceil(window.innerHeight + window.scrollY) >=
+        document.documentElement.scrollHeight;
+
+      if (bottom && nextPage) {
+        clearTimeout(debouncer);
+        const timeout = setTimeout(async () => {
+          setNextPage('');
+          const { items, after } = await fetchIGFeed(nextPage);
+          setGalleryItems([...galleryItems, ...items]);
+          setNextPage(after);
+        }, debounceTime);
+        setDebouncer(timeout);
+      }
+    }
+
     window.addEventListener('scroll', handleScroll);
 
     return () => {
       window.removeEventListener('scroll', handleScroll);
       clearTimeout(debouncer);
     };
-  }, [nextPage, debouncer]);
-
-  async function handleScroll(e: Event) {
-    const debounceTime = 500;
-    const bottom =
-      Math.ceil(window.innerHeight + window.scrollY) >=
-      document.documentElement.scrollHeight;
-
-    if (bottom && nextPage) {
-      clearTimeout(debouncer);
-      const timeout = setTimeout(async () => {
-        setNextPage('');
-        const { items, after } = await fetchIGFeed(nextPage);
-        setGalleryItems([...galleryItems, ...items]);
-        setNextPage(after);
-      }, debounceTime);
-      setDebouncer(timeout);
-    }
-  }
+  }, [nextPage, debouncer, galleryItems]);
 
   return (
     <div className="flex flex-col items-center justify-center gap-2 md:flex-row md:flex-wrap">

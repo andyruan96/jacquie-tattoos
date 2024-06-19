@@ -22,7 +22,7 @@ const useHash = () => {
     return () => {
       window.removeEventListener('hashchange', handleHashChange);
     };
-  }, []);
+  }, [hash]);
 
   return hash;
 };
