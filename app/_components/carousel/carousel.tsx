@@ -37,7 +37,7 @@ export default function Carousel({
             className="absolute left-0 z-20"
           >
             <FontAwesomeIcon
-              className="text-4xl text-white"
+              className="text-4xl text-summer-blue"
               icon={faCircleChevronLeft}
             ></FontAwesomeIcon>
           </button>
@@ -72,7 +72,7 @@ export default function Carousel({
             className="absolute right-0 z-20"
           >
             <FontAwesomeIcon
-              className="text-4xl text-white"
+              className="text-4xl text-summer-blue"
               icon={faCircleChevronRight}
             ></FontAwesomeIcon>
           </button>

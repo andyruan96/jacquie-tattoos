@@ -1,3 +1,4 @@
+import { light } from '@fortawesome/fontawesome-svg-core/import.macro';
 import { colors, nextui } from '@nextui-org/react';
 import type { Config } from 'tailwindcss';
 
@@ -18,7 +19,6 @@ const config: Config = {
       colors: {
         'summer-green': {
           DEFAULT: '#9bbfa4',
-          dark: '#72a980',
         },
         'summer-blue': '#4e8575',
         'coconut-cream': 'rgb(var(--background-start-rgb) / <alpha-value>)',
@@ -57,6 +57,33 @@ const config: Config = {
     },
   },
   darkMode: 'class',
-  plugins: [nextui()],
+  plugins: [
+    nextui({
+      themes: {
+        light: {
+          colors: {
+            primary: {
+              DEFAULT: '#c06542',
+            },
+            secondary: {
+              DEFAULT: '#4e8575',
+            },
+            focus: '#00aa9a',
+          },
+        },
+        dark: {
+          colors: {
+            primary: {
+              DEFAULT: '#c06542',
+            },
+            secondary: {
+              DEFAULT: '#4e8575',
+            },
+            focus: '#00aa9a',
+          },
+        },
+      },
+    }),
+  ],
 };
 export default config;

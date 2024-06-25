@@ -21,7 +21,9 @@ export default function PhotoModal({
     <Modal>
       <Suspense fallback={<div>Loading...</div>}>
         <GalleryContext.Provider value={{ handleBack }}>
-          <InstagramItem mediaId={id}></InstagramItem>
+          <div className="w-full text-center text-raw-sienna-dark md:px-16">
+            <InstagramItem mediaId={id}></InstagramItem>
+          </div>
         </GalleryContext.Provider>
       </Suspense>
     </Modal>

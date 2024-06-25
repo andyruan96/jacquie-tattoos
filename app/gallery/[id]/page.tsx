@@ -15,7 +15,9 @@ export default function Photo({ params: { id } }: { params: { id: string } }) {
   return (
     <Suspense fallback={<div>Loading...</div>}>
       <GalleryContext.Provider value={{ handleBack }}>
-        <InstagramItem mediaId={id}></InstagramItem>
+        <div className="w-full text-center text-raw-sienna-dark">
+          <InstagramItem mediaId={id}></InstagramItem>
+        </div>
       </GalleryContext.Provider>
     </Suspense>
   );

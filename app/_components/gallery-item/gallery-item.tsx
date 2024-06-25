@@ -24,7 +24,6 @@ export default function GalleryItemComponent({
   const captionRef = useRef<HTMLDivElement>(null);
 
   function toggleCaption() {
-    console.log('show caption');
     if (captionRef.current) {
       if (captionRef.current.classList.contains('animate-fadeIn')) {
         // fadeout
@@ -54,6 +53,7 @@ export default function GalleryItemComponent({
           <video
             controls
             muted
+            autoPlay
             preload="metadata"
             poster={galleryItem.src}
             className={`${className}`}
@@ -75,7 +75,12 @@ export default function GalleryItemComponent({
           </video>
           <div className="absolute top-0 flex w-full flex-row justify-between p-2">
             {handleBack && (
-              <Button isIconOnly aria-label="Back" onClick={handleBack}>
+              <Button
+                isIconOnly
+                aria-label="Back"
+                onClick={handleBack}
+                color="secondary"
+              >
                 <FontAwesomeIcon
                   icon={faArrowLeft}
                   className="text-xl"
@@ -86,13 +91,19 @@ export default function GalleryItemComponent({
               isIconOnly
               aria-label="Show caption"
               onClick={toggleCaption}
+              color="secondary"
             >
               <FontAwesomeIcon
                 icon={faMessage}
                 className="text-xl"
               ></FontAwesomeIcon>
             </Button>
-            <Button isIconOnly aria-label="Link to Instagram" role="link">
+            <Button
+              isIconOnly
+              aria-label="Link to Instagram"
+              role="link"
+              color="secondary"
+            >
               <a href={galleryItem.permalink} target="__blank">
                 <FontAwesomeIcon
                   icon={faInstagram}
@@ -117,7 +128,12 @@ export default function GalleryItemComponent({
           />
           <div className="absolute top-0 flex w-full flex-row justify-between p-2">
             {handleBack && (
-              <Button isIconOnly aria-label="Back" onClick={handleBack}>
+              <Button
+                isIconOnly
+                aria-label="Back"
+                onClick={handleBack}
+                color="secondary"
+              >
                 <FontAwesomeIcon
                   icon={faArrowLeft}
                   className="text-xl"
@@ -128,13 +144,19 @@ export default function GalleryItemComponent({
               isIconOnly
               aria-label="Show caption"
               onClick={toggleCaption}
+              color="secondary"
             >
               <FontAwesomeIcon
                 icon={faMessage}
                 className="text-xl"
               ></FontAwesomeIcon>
             </Button>
-            <Button isIconOnly aria-label="Link to Instagram" role="link">
+            <Button
+              isIconOnly
+              aria-label="Link to Instagram"
+              role="link"
+              color="secondary"
+            >
               <a href={galleryItem.permalink} target="__blank">
                 <FontAwesomeIcon
                   icon={faInstagram}
@@ -146,11 +168,11 @@ export default function GalleryItemComponent({
         </div>
       )}
       <Card
-        className="fill-mode-forwards absolute w-full opacity-0"
+        className="fill-mode-forwards absolute w-full bg-coconut-cream opacity-0"
         ref={captionRef}
       >
         <CardBody>
-          <p className="text-sm">{caption}</p>
+          <p className="text-sm text-ironstone">{caption}</p>
         </CardBody>
       </Card>
     </div>

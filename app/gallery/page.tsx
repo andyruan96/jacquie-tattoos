@@ -4,7 +4,8 @@ import { GalleryItem, fetchIGFeed } from '@/app/_lib/gallery-actions';
 import Image from 'next/image';
 import Link from 'next/link';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFilm, faSpinner, faVideo } from '@fortawesome/free-solid-svg-icons';
+import { faFilm, faVideo } from '@fortawesome/free-solid-svg-icons';
+import LoadingSpinner from '@/app/_components/loading-spinner/loading-spinner';
 
 export default function Gallery() {
   const [galleryItems, setGalleryItems] = useState<GalleryItem[]>([]);
@@ -66,24 +67,21 @@ export default function Gallery() {
             {item.type === 'CAROUSEL_ALBUM' && (
               <FontAwesomeIcon
                 icon={faFilm}
-                className="absolute right-2 top-2 z-20 text-xl text-white"
+                className="absolute right-2 top-2 z-20 text-xl text-coconut-cream"
               />
             )}
             {item.type === 'VIDEO' && (
               <FontAwesomeIcon
                 icon={faVideo}
-                className="absolute right-2 top-2 z-20 text-xl text-white"
+                className="absolute right-2 top-2 z-20 text-xl text-coconut-cream"
               />
             )}
           </Link>
         );
       })}
       {!nextPage && (
-        <div className="flex w-full justify-center py-10">
-          <FontAwesomeIcon
-            icon={faSpinner}
-            className="animate-spin text-4xl"
-          ></FontAwesomeIcon>
+        <div className="flex w-full justify-center py-10 text-raw-sienna-dark">
+          <LoadingSpinner sizeClass="text-6xl" />
         </div>
       )}
     </div>

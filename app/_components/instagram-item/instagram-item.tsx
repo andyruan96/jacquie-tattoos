@@ -8,6 +8,7 @@ import {
 import { useEffect, useState } from 'react';
 import Carousel from '@/app/_components/carousel/carousel';
 import { CaptionContext } from '@/app/_lib/gallery-context';
+import LoadingSpinner from '@/app/_components/loading-spinner/loading-spinner';
 
 export default function InstagramItem({ mediaId }: { mediaId: string }) {
   const [igItem, setIgItem] = useState<GalleryItem | null>();
@@ -32,7 +33,11 @@ export default function InstagramItem({ mediaId }: { mediaId: string }) {
 
   return (
     <CaptionContext.Provider value={igItem?.caption ?? ''}>
-      <Carousel carouselItems={igCarouselAlbum}></Carousel>
+      {igCarouselAlbum ? (
+        <Carousel carouselItems={igCarouselAlbum}></Carousel>
+      ) : (
+        <LoadingSpinner sizeClass="text-6xl" />
+      )}
     </CaptionContext.Provider>
   );
 }
