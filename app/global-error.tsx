@@ -27,7 +27,7 @@ export default function Error({
             later.
           </h2>
           <Button
-            color="primary"
+            className="bg-ironstone text-coconut-cream"
             onClick={
               // Attempt to recover by trying to re-render the invoices route
               () => reset()
