@@ -17,6 +17,8 @@ import Image from 'next/image';
 import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
 import clsx from 'clsx';
 import { useCrash } from '@/app/_lib/use-crash';
+import { isRedirectError } from 'next/dist/client/components/redirect';
+import LoadingSpinner from '@/app/_components/loading-spinner/loading-spinner';
 
 export default function BookingForm() {
   const initialState: State = { message: '', errors: {} };
@@ -60,8 +62,10 @@ export default function BookingForm() {
 
   const { executeRecaptcha } = useGoogleReCaptcha();
   const crash = useCrash();
+  const [formSubmitted, setFormSubmitted] = useState(false);
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    setFormSubmitted(true);
     const formData = new FormData(event.currentTarget);
 
     let token;
@@ -71,10 +75,16 @@ export default function BookingForm() {
 
     try {
       const res = await sendBookingForm(token ?? 'no token', state, formData);
-      if (res.message) {
+      if (res && res.message) {
         setState(res);
+        setFormSubmitted(false);
       }
     } catch (e) {
+      if (isRedirectError(e)) {
+        // success allow redirect
+        return;
+      }
+      // fail use error.tsx
       crash(e);
     }
   }
@@ -220,7 +230,7 @@ export default function BookingForm() {
           </label>
           <input
             className={clsx(
-              'w-full cursor-pointer rounded border bg-white text-sm font-semibold text-gray-400 shadow-md file:mr-4 file:cursor-pointer file:border-0 file:bg-gray-100 file:px-4 file:py-3 file:text-gray-500 file:hover:bg-gray-200',
+              'w-full cursor-pointer rounded-lg border bg-white text-sm font-semibold text-gray-400 shadow-md file:mr-4 file:cursor-pointer file:border-0 file:bg-gray-100 file:px-4 file:py-3 file:text-gray-500 file:hover:bg-gray-200',
               { 'text-red-700': !!state.errors?.file },
             )}
             id="file"
@@ -371,7 +381,7 @@ export default function BookingForm() {
           </SelectItem>
         </Select>
 
-        <div className="my-3 flex flex-col gap-3 lg:flex-row">
+        <div className="my-3 flex flex-col gap-3 xl:flex-row">
           <Select
             id="medical1"
             name="medical1"
@@ -414,8 +424,10 @@ export default function BookingForm() {
         <Button
           className="mt-3 bg-ironstone font-bold text-coconut-cream shadow-md"
           type="submit"
+          isDisabled={formSubmitted}
         >
           Submit
+          {formSubmitted && <LoadingSpinner sizeClass="text-xl" />}
         </Button>
       </div>
     </form>
