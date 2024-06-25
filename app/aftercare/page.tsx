@@ -4,7 +4,7 @@ export default function Aftercare() {
   return (
     <div className="flex flex-col gap-10 lg:flex-row">
       <div className="text-ironstone">
-        <h2 className="mb-5 text-2xl font-bold text-raw-sienna-dark">
+        <h2 className="mb-5 text-4xl font-bold uppercase text-raw-sienna-dark">
           Aftercare
         </h2>
 

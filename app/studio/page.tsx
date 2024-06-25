@@ -1,7 +1,7 @@
 export default function Studio() {
   return (
     <>
-      <h2 className="mb-5 text-2xl font-bold text-raw-sienna-dark">
+      <h2 className="mb-5 text-4xl font-bold uppercase text-raw-sienna-dark">
         Located At
       </h2>
       <div className="flex flex-col gap-6 lg:flex-row">
