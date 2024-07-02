@@ -12,11 +12,9 @@ import {
 } from './email-template';
 import Mail from 'nodemailer/lib/mailer';
 import sanitize from 'sanitize-html';
-import { createReadStream, writeFile, writeFileSync } from 'fs';
-import { GoogleAuth, OAuth2Client } from 'google-auth-library';
+import { OAuth2Client } from 'google-auth-library';
 import { google } from 'googleapis';
 import { Readable } from 'node:stream';
-import path from 'path';
 
 const BookingFormSchema = z.object({
   email: z.string().email(),
@@ -76,11 +74,8 @@ export async function sendBookingForm(
   prevState: State,
   formData: FormData,
 ): Promise<State> {
-  console.log('artificial delay 3000');
-  await new Promise((resolve) => setTimeout(resolve, 3000));
-  throw new Error('test error');
-
   if (!(await checkRecaptcha(gRecaptchaToken))) {
+    console.error('Failed Recaptcha', gRecaptchaToken);
     throw new Error('Failed Recaptcha');
   }
 
@@ -105,7 +100,6 @@ export async function sendBookingForm(
     moreInfo: formData.get('moreInfo'),
   });
 
-  // console.log(validatedFields);
   if (!validatedFields.success) {
     console.error(
       'Form validation failed',
@@ -131,24 +125,17 @@ export async function sendBookingForm(
   // process data
   const emailHtml = generateEmailFormResponseHtml(validatedFields.data);
 
-  // TODO: preview without email
-  writeFileSync(path.join(process.cwd(), 'email-test.html'), emailHtml);
+  // uncomment for preview locally
+  // writeFileSync(path.join(process.cwd(), 'email-test.html'), emailHtml);
 
   const fileIds = await uploadToDrive(files, validatedFields.data.name);
   await appendToSheet(validatedFields.data, fileIds);
 
-  // redirect('/booking/confirm');
-
   if (await sendMail(emailHtml, files)) {
-    // revalidatePath('/booking');
-    // redirect('/');
-    // return { message: 'Form Processed Successfully.', errors: {} };
     redirect('booking/confirm');
   } else {
-    return {
-      message: 'Email failed to send.',
-      errors: { server: ['Email failed to send'] },
-    };
+    console.error('Email Failed To Send', validatedFields.data);
+    throw new Error('Email Failed To Send');
   }
 }
 
@@ -168,7 +155,6 @@ async function sendMail(html: string, files?: File[]) {
     from: 'your_email@gmail.com', // sending from gmail app -- this has no affect
     to: 'andyruan@hotmail.ca',
     subject: 'Hello from Jacquie!',
-    // text: 'This is a test email sent using Nodemailer.',
     html,
   };
 

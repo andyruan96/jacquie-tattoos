@@ -11,7 +11,7 @@ import {
   Textarea,
 } from '@nextui-org/react';
 import { Input, DateInput } from '@nextui-org/react';
-import { State, sendBookingForm } from '@/app/_lib/actions';
+import { State, sendBookingForm } from '@/app/_lib/booking-form-actions';
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import Image from 'next/image';
 import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
