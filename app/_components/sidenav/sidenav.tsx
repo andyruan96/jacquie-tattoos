@@ -87,12 +87,9 @@ export default function SideNav() {
               </Link>
             </NavbarMenuItem>
           ))}
-          <NavbarMenuItem className="mt-2 grid grid-cols-6 gap-2">
+          <NavbarMenuItem className="mt-2 flex justify-center gap-6">
             {SocialLinks.map((social, index) => (
-              <div
-                key={`${social}-${index}`}
-                className={`col-span-2 col-start-${2 * (index + 1)}`}
-              >
+              <div key={`${social}-${index}`} className="w-1/3">
                 <LinkIcon
                   href={social.href}
                   icon={social.icon}
