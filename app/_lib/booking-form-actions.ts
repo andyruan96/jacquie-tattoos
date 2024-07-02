@@ -131,7 +131,7 @@ export async function sendBookingForm(
   const fileIds = await uploadToDrive(files, validatedFields.data.name);
   await appendToSheet(validatedFields.data, fileIds);
 
-  if (await sendMail(emailHtml, files)) {
+  if (await sendMail(emailHtml, validatedFields.data.email, files)) {
     redirect('booking/confirm');
   } else {
     console.error('Email Failed To Send', validatedFields.data);
@@ -139,7 +139,7 @@ export async function sendBookingForm(
   }
 }
 
-async function sendMail(html: string, files?: File[]) {
+async function sendMail(html: string, recipientEmail: string, files?: File[]) {
   const transporter = nodemailer.createTransport({
     service: 'Gmail',
     host: 'smtp.gmail.com',
@@ -152,8 +152,11 @@ async function sendMail(html: string, files?: File[]) {
   });
 
   const mailOptions: Mail.Options = {
-    from: 'your_email@gmail.com', // sending from gmail app -- this has no affect
-    to: 'andyruan@hotmail.ca',
+    from: process.env.GMAIL_APP_USER,
+    to:
+      process.env.ENV === 'prod'
+        ? recipientEmail
+        : process.env.EMAIL_TEST_RECIPIENT,
     subject: 'Hello from Jacquie!',
     html,
   };
