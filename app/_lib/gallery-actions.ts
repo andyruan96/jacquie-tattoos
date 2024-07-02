@@ -35,7 +35,6 @@ export async function fetchIGFeed(
   let res;
   try {
     const url = `${baseUrl}?${params.toString()}`;
-    console.log('url', url);
     res = await fetch(url, {
       mode: 'cors',
       headers: { 'Content-Type': 'application/json' },
@@ -57,7 +56,7 @@ export async function fetchIGFeed(
 
     return ret;
   } catch (e) {
-    console.log('issue fetching ig feed', e);
+    console.error('issue fetching ig feed', e);
     return { items: [], after: '' };
   }
 }
@@ -74,7 +73,6 @@ async function refreshIGToken() {
   let res;
   try {
     const url = `${baseUrl}?${params.toString()}`;
-    console.log('url', url);
     res = await fetch(url, {
       mode: 'cors',
       headers: { 'Content-Type': 'application/json' },
@@ -88,7 +86,7 @@ async function refreshIGToken() {
 
     return false;
   } catch (e) {
-    console.log('issue refreshing ig token', e);
+    console.error('issue refreshing ig token', e);
     return false;
   }
 }
@@ -112,7 +110,6 @@ export async function fetchIGItem(
   let res;
   try {
     const url = `${baseUrl}?${params.toString()}`;
-    console.log('url', url);
     res = await fetch(url, {
       mode: 'cors',
       headers: { 'Content-Type': 'application/json' },
@@ -126,7 +123,7 @@ export async function fetchIGItem(
     const ret = mapToGalleryItem(response);
     return ret;
   } catch (e) {
-    console.log('issue fetching ig item', e, mediaId);
+    console.error('issue fetching ig item', e, mediaId);
     return null;
   }
 }
@@ -150,7 +147,6 @@ export async function fetchIGCarouselAlbum(
   let res;
   try {
     const url = `${baseUrl}?${params.toString()}`;
-    console.log('url', url);
     res = await fetch(url, {
       mode: 'cors',
       headers: { 'Content-Type': 'application/json' },
@@ -166,7 +162,7 @@ export async function fetchIGCarouselAlbum(
     );
     return ret;
   } catch (e) {
-    console.log('issue fetching ig carousel album', e, parentMediaId);
+    console.error('issue fetching ig carousel album', e, parentMediaId);
     return [];
   }
 }
