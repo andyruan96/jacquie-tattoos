@@ -14,7 +14,7 @@ export default function BookingConfirmed() {
           className="h-auto w-full scale-[-1] rounded-lg"
         />
       </div>
-      <div className="my-auto flex h-auto flex-col gap-5 text-center text-ironstone md:w-8/12 xl:w-4/12">
+      <div className="my-auto flex h-auto flex-col gap-5 p-8 text-center text-ironstone md:ml-24 md:w-8/12 md:p-0 xl:ml-0 xl:w-4/12">
         <h2 className="text-4xl font-bold uppercase text-raw-sienna-dark">
           Thank You!
         </h2>
@@ -48,12 +48,12 @@ export default function BookingConfirmed() {
           </Link>
         </Button>
       </div>
-      <div className="w-4/12 self-center md:self-end">
+      <div className="self-center md:w-4/12 md:self-end">
         <Image
           src="/thank-you.png"
           alt="A doodle, thanking the user"
-          width="360"
-          height="360"
+          width="0"
+          height="0"
           sizes="100vw"
           className="h-auto w-full rounded-lg"
         />

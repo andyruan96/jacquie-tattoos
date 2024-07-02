@@ -76,6 +76,10 @@ export async function sendBookingForm(
   prevState: State,
   formData: FormData,
 ): Promise<State> {
+  console.log('artificial delay 3000');
+  await new Promise((resolve) => setTimeout(resolve, 3000));
+  throw new Error('test error');
+
   if (!(await checkRecaptcha(gRecaptchaToken))) {
     throw new Error('Failed Recaptcha');
   }
@@ -126,26 +130,26 @@ export async function sendBookingForm(
 
   // process data
   const emailHtml = generateEmailFormResponseHtml(validatedFields.data);
-  // console.log(emailHtml);
 
   // TODO: preview without email
   writeFileSync(path.join(process.cwd(), 'email-test.html'), emailHtml);
 
-  // await uploadToDrive(files, validatedFields.data.name);
-  // await appendToSheet(validatedFields.data, []);
+  const fileIds = await uploadToDrive(files, validatedFields.data.name);
+  await appendToSheet(validatedFields.data, fileIds);
 
-  // if (await sendMail(emailHtml, files)) {
-  //   // revalidatePath('/booking');
-  //   // redirect('/');
-  //   return { message: 'Form Processed Successfully.', errors: {} };
-  // } else {
-  //   return {
-  //     message: 'Email failed to send.',
-  //     errors: { server: ['Email failed to send'] },
-  //   };
-  // }
+  // redirect('/booking/confirm');
 
-  redirect('/booking/confirm');
+  if (await sendMail(emailHtml, files)) {
+    // revalidatePath('/booking');
+    // redirect('/');
+    // return { message: 'Form Processed Successfully.', errors: {} };
+    redirect('booking/confirm');
+  } else {
+    return {
+      message: 'Email failed to send.',
+      errors: { server: ['Email failed to send'] },
+    };
+  }
 }
 
 async function sendMail(html: string, files?: File[]) {
@@ -262,10 +266,13 @@ async function checkRecaptcha(gRecaptchaToken: string) {
   }
 }
 
-async function uploadToDrive(files?: File[], fileNameSuffix?: string) {
+async function uploadToDrive(
+  files?: File[],
+  fileNameSuffix?: string,
+): Promise<string[]> {
   if (!files?.length || files[0].size <= 0) {
     // no files to upload
-    return;
+    return [];
   }
 
   const auth = new OAuth2Client({
@@ -278,7 +285,7 @@ async function uploadToDrive(files?: File[], fileNameSuffix?: string) {
 
   const service = google.drive({ version: 'v3', auth: auth });
 
-  const fileIds = [];
+  const fileIds: string[] = [];
   for (const file of files) {
     const requestBody = {
       name: `${file.name} - ${fileNameSuffix}`,
@@ -299,9 +306,12 @@ async function uploadToDrive(files?: File[], fileNameSuffix?: string) {
         media: media,
       });
       console.log('File Id:', file.data.id);
-      fileIds.push(file.data.id);
+      if (file.data.id) {
+        fileIds.push(file.data.id);
+      }
     } catch (e) {
       console.error('issue uploading to drive', e, requestBody, media);
+      return [];
     }
   }
 
