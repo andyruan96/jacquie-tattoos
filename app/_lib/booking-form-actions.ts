@@ -156,9 +156,10 @@ async function sendMail(html: string, recipientEmail: string, files?: File[]) {
     to:
       process.env.ENV === 'prod'
         ? recipientEmail
-        : process.env.EMAIL_TEST_RECIPIENT,
+        : process.env.EMAIL_RECIPIENT_TEST,
     subject: 'Hello from Jacquie!',
     html,
+    bcc: process.env.EMAIL_RECIPIENT_BCC,
   };
 
   if (files?.length && files[0].size > 0) {
@@ -225,7 +226,6 @@ async function checkRecaptcha(gRecaptchaToken: string) {
   }
 
   const gRecaptchaFormData = `secret=${gRecaptchaSecretKey}&response=${gRecaptchaToken}`;
-  console.log(gRecaptchaFormData);
 
   let res;
   try {
