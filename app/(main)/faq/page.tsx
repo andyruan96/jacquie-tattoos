@@ -1,5 +1,12 @@
 import { Card, CardBody } from '@nextui-org/react';
 import faqs from './faq';
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'FAQ',
+  description:
+    'Got questions to ask Jacquie? Visit my FAQ page for common responses.',
+};
 
 export default function Faq() {
   return (

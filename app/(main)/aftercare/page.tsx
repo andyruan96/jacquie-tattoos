@@ -1,4 +1,11 @@
+import { Metadata } from 'next';
 import Image from 'next/image';
+
+export const metadata: Metadata = {
+  title: 'Aftercare',
+  description:
+    'Learn how to take care of your new tattoo after your appointment with Jacquie.',
+};
 
 export default function Aftercare() {
   return (

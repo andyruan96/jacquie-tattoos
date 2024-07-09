@@ -1,5 +1,10 @@
 import { Button, Link } from '@nextui-org/react';
+import { Metadata } from 'next';
 import Image from 'next/image';
+
+export const metadata: Metadata = {
+  title: 'Thank You!',
+};
 
 export default function BookingConfirmed() {
   return (

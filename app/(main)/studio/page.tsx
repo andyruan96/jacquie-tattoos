@@ -1,3 +1,11 @@
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Studio',
+  description:
+    'Located at KULTURA TATTOO STUDIO. No set business hours. Every artist takes care of their own bookings. I am only at the studio when I have appointments so there’s no guarantee I’m there. So if you have a question for me, it’s best to email or message me on Instagram rather than popping by the studio.',
+};
+
 export default function Studio() {
   return (
     <>
