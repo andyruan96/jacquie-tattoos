@@ -113,6 +113,13 @@ export async function sendBookingForm(
 
   // validate file size
   const files = formData.getAll('file') as File[];
+  if (files && files.length > 5) {
+    console.error('Too many files');
+    return {
+      message: 'File upload must contain fewer than 6 items',
+      errors: { file: ['File upload must contain fewer than 6 items'] },
+    };
+  }
   if (files.some((file) => file.size > 5242880)) {
     // some files greater than drive upload limit of 5 MB
     console.error('File upload too large');
