@@ -159,14 +159,18 @@ async function sendMail(html: string, recipientEmail: string, files?: File[]) {
   });
 
   const mailOptions: Mail.Options = {
-    from: process.env.GMAIL_APP_USER,
+    from: {
+      name: 'jacquietattoos',
+      address: process.env.GMAIL_APP_USER ?? '',
+    },
     to:
       process.env.ENV === 'prod'
         ? recipientEmail
         : process.env.EMAIL_RECIPIENT_TEST,
-    subject: 'Hello from Jacquie!',
+    subject: 'Hello from jacquietattoos!',
     html,
     bcc: process.env.EMAIL_RECIPIENT_BCC,
+    attachDataUrls: true,
   };
 
   if (files?.length && files[0].size > 0) {
