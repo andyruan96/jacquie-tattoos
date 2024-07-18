@@ -5,6 +5,10 @@ const { authenticate } = require('@google-cloud/local-auth');
 const { google } = require('googleapis');
 
 /**
+ * Deprecated: Using a service account instead.
+ */
+
+/**
  * Run to get OAuth2 refresh token to manipulate drive. Generate credentials.json from G Cloud.
  */
 
