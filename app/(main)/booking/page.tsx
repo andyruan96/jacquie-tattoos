@@ -7,9 +7,5 @@ export const metadata: Metadata = {
 };
 
 export default function Booking() {
-  return (
-    <>
-      <BookingForm />
-    </>
-  );
+  return <BookingForm />;
 }
