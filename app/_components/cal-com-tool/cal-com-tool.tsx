@@ -1,6 +1,8 @@
 'use client';
 import Cal, { getCalApi } from '@calcom/embed-react';
-import { useEffect } from 'react';
+import clsx from 'clsx';
+import { useSearchParams } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
 export default function CalComTool() {
   // export these to share if used elsewhere
@@ -10,41 +12,54 @@ export default function CalComTool() {
   const colorIronstone = '#7e483a';
   const colorSummerGreen = '#9bbfa4';
 
+  const searchParams = useSearchParams();
+  const name = searchParams.get('name') ?? '';
+  const email = searchParams.get('email') ?? '';
+
+  const [booked, setBooked] = useState(false);
+
   useEffect(() => {
     (async function () {
       const cal = await getCalApi({});
       cal('ui', {
         theme: 'light',
-        // styles: { branding: { brandColor: '#e99e57' } },
         hideEventTypeDetails: false,
         layout: 'month_view',
         cssVarsPerTheme: {
           light: {
             'cal-brand': colorPorsche,
+
             'cal-text': colorPorsche,
-
             'cal-text-emphasis': colorPorsche,
-            'cal-border-emphasis': colorRawSiennaDark,
-
-            'cal-text-error': 'pink',
 
             'cal-border': colorIronstone,
             'cal-border-default': colorIronstone,
             'cal-border-subtle': colorIronstone,
             'cal-border-booker': colorIronstone,
+            'cal-border-emphasis': colorRawSiennaDark,
 
             'cal-text-muted': colorSummerGreen,
             'cal-bg-emphasis': colorCoconutCream,
 
             // todo: testing below vars
-            'cal-text-subtle': colorPorsche,
+            'cal-text-subtle': colorRawSiennaDark,
+            'cal-brand-emphasis': colorRawSiennaDark,
+            // 'cal-bg-error': colorSummerGreen,
+            // 'cal-border-error': colorSummerGreen,
+            // 'cal-text-error': colorSummerGreen,
             // 'cal-bg': colorCoconutCream,
+            // 'cal-bg-inverted': colorSummerGreen,
             // More CSS variables are defined here
             // https://github.com/calcom/cal.com/blob/b0ca7dae1a17f897e34b83c990f30ab65f615ee0/packages/config/tailwind-preset.js#L69
-
-            'cal-bg-inverted': colorSummerGreen,
           },
           dark: {},
+        },
+      });
+
+      cal('on', {
+        action: 'bookingSuccessful',
+        callback: (e) => {
+          setBooked(true);
         },
       });
     })();
@@ -59,9 +74,21 @@ export default function CalComTool() {
           height: '100%',
           overflow: 'hidden',
         }}
-        config={{ layout: 'month_view', name: 'test name' }}
+        config={{
+          layout: 'month_view',
+          name,
+          email,
+        }}
       />
-      <div className="invisible absolute bottom-5 h-10 w-full bg-coconut-cream min-[1205px]:visible"></div>
+      <div
+        className={clsx(
+          'invisible absolute bottom-5 h-10 w-full bg-coconut-cream',
+          {
+            invisible: booked,
+            'min-[1205px]:visible': !booked,
+          },
+        )}
+      ></div>
     </div>
   );
 }
