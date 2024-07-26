@@ -58,7 +58,7 @@ export default function CalComTool({ event }: { event: string }) {
 
       cal('on', {
         action: 'bookingSuccessful',
-        callback: (e) => {
+        callback: () => {
           setBooked(true);
         },
       });
