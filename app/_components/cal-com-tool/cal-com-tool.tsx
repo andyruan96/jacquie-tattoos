@@ -4,7 +4,7 @@ import clsx from 'clsx';
 import { useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
-export default function CalComTool() {
+export default function CalComTool({ event }: { event: string }) {
   // export these to share if used elsewhere
   const colorPorsche = '#e99e57';
   const colorRawSiennaDark = '#c06542';
@@ -68,7 +68,7 @@ export default function CalComTool() {
   return (
     <div className="relative">
       <Cal
-        calLink="jacquietattoos/2-hour-tattoo"
+        calLink={`jacquietattoos/${event}`}
         style={{
           width: '100%',
           height: '100%',
