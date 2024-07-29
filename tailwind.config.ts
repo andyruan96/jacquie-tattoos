@@ -1,5 +1,4 @@
-import { light } from '@fortawesome/fontawesome-svg-core/import.macro';
-import { colors, nextui } from '@nextui-org/react';
+import { nextui } from '@nextui-org/react';
 import type { Config } from 'tailwindcss';
 
 const config: Config = {

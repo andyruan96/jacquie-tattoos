@@ -202,10 +202,10 @@ export default function BookingForm() {
           }}
         >
           <SelectItem value="Custom" key="Custom">
-            Custom
+            Custom ($180 hourly)
           </SelectItem>
           <SelectItem value="Flash" key="Flash">
-            Flash
+            Flash (Flat rate, labelled on each piece)
           </SelectItem>
         </Select>
 
