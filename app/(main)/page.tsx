@@ -52,6 +52,9 @@ export default function Home() {
             <Button
               radius="sm"
               className="mt-8 flex-initial bg-black bg-porsche text-sm font-bold text-ironstone md:w-48"
+              as={Link}
+              href="https://www.instagram.com/xaintjpg/"
+              target="__blank"
             >
               ART INSTAGRAM
             </Button>
