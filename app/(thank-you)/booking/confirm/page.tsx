@@ -47,10 +47,12 @@ export default function BookingConfirmed() {
           have a no-show where I&apos;m wondering where you are.
         </p>
         <p>Looking forward to conversing with you. Have a great day.</p>
-        <Button className="bg-ironstone">
-          <Link href="/" className="text-coconut-cream">
-            Back To Home
-          </Link>
+        <Button
+          className="text-md bg-ironstone text-coconut-cream"
+          as={Link}
+          href="/"
+        >
+          Back To Home
         </Button>
       </div>
       <div className="self-center md:w-4/12 md:self-end">
