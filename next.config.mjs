@@ -8,6 +8,7 @@ const nextConfig = {
         hostname: '*.cdninstagram.com',
       },
     ],
+    domains: ['drive.google.com'],
   },
 };
 
