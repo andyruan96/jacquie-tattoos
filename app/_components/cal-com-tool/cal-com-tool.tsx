@@ -5,16 +5,17 @@ import { useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 export default function CalComTool({ event }: { event: string }) {
+  const searchParams = useSearchParams();
+  const name = searchParams.get('name') ?? '';
+  const email = searchParams.get('email') ?? '';
+  const title = searchParams.get('title') ?? '';
+
   // export these to share if used elsewhere
   const colorPorsche = '#e99e57';
   const colorRawSiennaDark = '#c06542';
   const colorCoconutCream = '#f8f7de';
   const colorIronstone = '#7e483a';
   const colorSummerGreen = '#9bbfa4';
-
-  const searchParams = useSearchParams();
-  const name = searchParams.get('name') ?? '';
-  const email = searchParams.get('email') ?? '';
 
   const [booked, setBooked] = useState(false);
 
@@ -78,6 +79,7 @@ export default function CalComTool({ event }: { event: string }) {
           layout: 'month_view',
           name,
           email,
+          title,
         }}
       />
       <div
