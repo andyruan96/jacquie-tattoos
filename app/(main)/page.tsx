@@ -14,7 +14,7 @@ export default function Home() {
           className="h-[500px] w-full object-cover md:h-auto md:max-w-xl md:rounded-lg"
         />
         <div className="flex h-full flex-col gap-4 bg-porsche p-10 text-sm text-coconut-cream md:-ml-20 md:mr-20 md:mt-20 md:max-w-lg md:max-w-xl md:rounded-3xl">
-          <h3 className="text-raw-sienna-dark text-lg font-bold">
+          <h3 className="text-lg font-bold text-raw-sienna-dark">
             JACQUIETATTOOS
           </h3>
           <p>
@@ -27,14 +27,14 @@ export default function Home() {
             and all things cute/spooky.
           </p>
           <p>Established in 2019.</p>
-          <Link className="text-md flex-initial" href="/booking">
-            <Button
-              radius="sm"
-              className="bg-ironstone font-bold text-coconut-cream md:w-48"
-            >
-              BOOK NOW
-            </Button>
-          </Link>
+          <Button
+            radius="sm"
+            className="bg-ironstone font-bold text-coconut-cream md:w-48"
+            as={Link}
+            href="/booking"
+          >
+            BOOK NOW
+          </Button>
         </div>
       </div>
       <div className="flex flex-col justify-center md:mt-10 md:flex-row">
@@ -52,6 +52,9 @@ export default function Home() {
             <Button
               radius="sm"
               className="mt-8 flex-initial bg-black bg-porsche text-sm font-bold text-ironstone md:w-48"
+              as={Link}
+              href="https://www.instagram.com/xaintjpg/"
+              target="__blank"
             >
               ART INSTAGRAM
             </Button>
