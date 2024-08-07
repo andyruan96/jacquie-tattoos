@@ -12,7 +12,7 @@ import {
 } from './email-template';
 import Mail from 'nodemailer/lib/mailer';
 import sanitize from 'sanitize-html';
-import { OAuth2Client } from 'google-auth-library';
+import { GoogleAuth } from 'google-auth-library';
 import { google } from 'googleapis';
 import { Readable } from 'node:stream';
 
@@ -159,14 +159,18 @@ async function sendMail(html: string, recipientEmail: string, files?: File[]) {
   });
 
   const mailOptions: Mail.Options = {
-    from: process.env.GMAIL_APP_USER,
+    from: {
+      name: 'jacquietattoos',
+      address: process.env.GMAIL_APP_USER ?? '',
+    },
     to:
       process.env.ENV === 'prod'
         ? recipientEmail
         : process.env.EMAIL_RECIPIENT_TEST,
-    subject: 'Hello from Jacquie!',
+    subject: 'Hello from jacquietattoos!',
     html,
     bcc: process.env.EMAIL_RECIPIENT_BCC,
+    attachDataUrls: true,
   };
 
   if (files?.length && files[0].size > 0) {
@@ -271,12 +275,16 @@ async function uploadToDrive(
     return [];
   }
 
-  const auth = new OAuth2Client({
-    clientId: process.env.GOOGLE_DRIVE_CLIENT_ID,
-    clientSecret: process.env.GOOGLE_DRIVE_CLIENT_SECRET,
-    credentials: {
-      refresh_token: process.env.GOOGLE_DRIVE_REFRESH_TOKEN,
-    },
+  const credentials = JSON.parse(
+    Buffer.from(
+      process.env.GOOGLE_SERVICE_ACCOUNT_KEY ?? '',
+      'base64',
+    ).toString(),
+  );
+
+  const auth = new GoogleAuth({
+    scopes: 'https://www.googleapis.com/auth/drive.file',
+    credentials,
   });
 
   const service = google.drive({ version: 'v3', auth: auth });
@@ -351,15 +359,20 @@ async function appendToSheet(
   validatedFieldsData: ParsedBookingForm,
   fileIds: string[],
 ) {
-  const auth = new OAuth2Client({
-    clientId: process.env.GOOGLE_DRIVE_CLIENT_ID,
-    clientSecret: process.env.GOOGLE_DRIVE_CLIENT_SECRET,
-    credentials: {
-      refresh_token: process.env.GOOGLE_DRIVE_REFRESH_TOKEN,
-    },
+  const credentials = JSON.parse(
+    Buffer.from(
+      process.env.GOOGLE_SERVICE_ACCOUNT_KEY ?? '',
+      'base64',
+    ).toString(),
+  );
+
+  const auth = new GoogleAuth({
+    scopes: 'https://www.googleapis.com/auth/spreadsheets',
+    credentials,
   });
 
   const service = google.sheets({ version: 'v4', auth });
+
   const values = [
     sheetValueOrderConfig.map((key) => {
       if (typeof key === 'string') {
