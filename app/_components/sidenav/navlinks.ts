@@ -3,6 +3,7 @@ import { faInstagram, faTiktok } from '@fortawesome/free-brands-svg-icons';
 import { faCircleQuestion, faImage } from '@fortawesome/free-regular-svg-icons';
 import {
   faBandage,
+  faBolt,
   faEnvelope,
   faHouseChimney,
   faLocationDot,
@@ -25,6 +26,11 @@ export const NavLinks: NavLink[] = [
     label: 'Booking',
     href: '/booking',
     icon: faEnvelope,
+  },
+  {
+    label: 'Flash',
+    href: '/flash',
+    icon: faBolt,
   },
   {
     label: 'Gallery',
