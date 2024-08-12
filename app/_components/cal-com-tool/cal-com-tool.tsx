@@ -4,7 +4,13 @@ import clsx from 'clsx';
 import { useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
-export default function CalComTool({ event }: { event: string }) {
+export default function CalComTool({
+  event,
+  flashId,
+}: {
+  event: string;
+  flashId?: string;
+}) {
   const searchParams = useSearchParams();
   const name = searchParams.get('name') ?? '';
   const email = searchParams.get('email') ?? '';
@@ -80,6 +86,7 @@ export default function CalComTool({ event }: { event: string }) {
           name,
           email,
           title,
+          flashId: flashId ?? '',
         }}
       />
       <div
