@@ -10,7 +10,6 @@ export default function Flash() {
   useEffect(() => {
     async function fetchFlash() {
       const flashItems = await getFlashFromDrive();
-      console.log('flash', flashItems);
       if (flashItems) {
         setFlash(flashItems);
       }
@@ -21,10 +20,10 @@ export default function Flash() {
 
   return (
     <>
-      <h2 className="mb-5 text-center text-4xl font-bold text-raw-sienna-dark">
+      <h2 className="mb-5 text-center text-4xl font-bold uppercase text-raw-sienna-dark">
         Flash
       </h2>
-      <div className="flex flex-col items-center justify-center gap-2 md:flex-row md:flex-wrap">
+      <div className="flex flex-col items-center justify-center gap-2 overflow-hidden md:flex-row md:flex-wrap">
         {flash.map((flashItem) => (
           <Link
             href={`/cal/flash?title=${flashItem.name}`}
@@ -39,7 +38,7 @@ export default function Flash() {
               width="0"
               height="0"
               sizes="100vw"
-              className="h-auto w-[360px] transform rounded-lg brightness-90 transition will-change-auto hover:brightness-100 md:h-[360px] md:w-auto"
+              className="h-[360px] w-[360px] transform rounded-lg object-contain brightness-90 transition will-change-auto hover:brightness-100"
               src={`https://drive.google.com/uc?export=view&id=${flashItem.id}`}
               alt={flashItem.name}
               placeholder="blur"

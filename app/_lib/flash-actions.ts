@@ -2,14 +2,7 @@
 
 import { GoogleAuth } from 'google-auth-library';
 import { drive_v3, google } from 'googleapis';
-
-type Flash = {
-  kind: string;
-  id: string;
-  name: string;
-  mimeType: string;
-  isSold: boolean;
-};
+import { Flash, soldPrefix } from './flash.interfaces';
 
 export async function getFlashFromDrive(): Promise<Flash[]> {
   const credentials = JSON.parse(
@@ -27,6 +20,7 @@ export async function getFlashFromDrive(): Promise<Flash[]> {
   const service = google.drive({ version: 'v3', auth: auth });
 
   const res = await service.files.list({
+    orderBy: 'createdTime desc',
     q: `'${process.env.GOOGLE_DRIVE_FLASH_FOLDER_ID}' in parents`,
   });
 
@@ -47,6 +41,6 @@ function mapToFlashItem(file: drive_v3.Schema$File): Flash {
     id: file.id ?? '',
     name: file.name ?? '',
     mimeType: file.mimeType ?? '',
-    isSold: file.name?.startsWith('#sold') ?? false,
+    isSold: file.name?.startsWith(soldPrefix) ?? false,
   };
 }
