@@ -62,7 +62,7 @@ export default function SideNav() {
         </NavbarContent>
         <NavbarMenu
           id="navMenu"
-          className="z-50 h-80 rounded-b-lg bg-summer-green pt-6 text-coconut-cream"
+          className="z-50 h-96 rounded-b-lg bg-summer-green pt-6 text-coconut-cream"
         >
           {NavLinks.map((navLink, index) => (
             <NavbarMenuItem
