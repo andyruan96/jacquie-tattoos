@@ -39,7 +39,7 @@ export default async function SelectAvailability({
     <div className="flex w-full flex-col items-center gap-5">
       {flash && (
         <figure className="text-center">
-          <figcaption className="text-2xl font-bold text-raw-sienna-dark">
+          <figcaption className="mb-2 text-2xl font-bold text-raw-sienna-dark">
             {flash.name}
           </figcaption>
           <Image
