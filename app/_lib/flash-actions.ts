@@ -22,6 +22,7 @@ export async function getFlashFromDrive(): Promise<Flash[]> {
   const res = await service.files.list({
     orderBy: 'createdTime desc',
     q: `'${process.env.GOOGLE_DRIVE_FLASH_FOLDER_ID}' in parents`,
+    fields: 'files(id,name,mimeType,kind,description)',
   });
 
   return (res.data.files ?? []).map((resFile) => mapToFlashItem(resFile));
@@ -42,5 +43,6 @@ function mapToFlashItem(file: drive_v3.Schema$File): Flash {
     name: file.name ?? '',
     mimeType: file.mimeType ?? '',
     isSold: file.name?.startsWith(soldPrefix) ?? false,
+    description: file.description ?? '',
   };
 }
