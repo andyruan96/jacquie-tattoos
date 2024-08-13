@@ -8,7 +8,7 @@ import crypto from 'node:crypto';
 enum CalEvent {
   BookingCancel = 'BOOKING_CANCELLED',
   BookingPaid = 'BOOKING_PAID',
-  // TODO: probably not using the below two events
+  // Use booking request instead of paid for testing
   BookingReject = 'BOOKING_REJECTED',
   BookingRequest = 'BOOKING_REQUESTED',
 }
@@ -30,8 +30,8 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  const event: CalEvent = json['triggerEvent'];
-  const flashId = json['payload']['responses']['flashId']['value'];
+  const event: CalEvent = json.triggerEvent;
+  const flashId = json.payload?.responses?.flashId?.value;
   console.log('triggerEvent, flashId', event, flashId);
 
   let flashToModify = null;
