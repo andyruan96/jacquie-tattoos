@@ -17,7 +17,11 @@ export default async function SelectAvailability({
   searchParams?: { [key: string]: string | string[] | undefined };
 }) {
   const validBookingEvents = new Set([
-    'flash',
+    'flash-45',
+    'flash-60',
+    'flash-90',
+    'flash-120',
+    'flash-180',
     '2-hour-tattoo',
     '1-hour-tattoo',
   ]);
@@ -27,7 +31,7 @@ export default async function SelectAvailability({
   }
 
   let flash = null;
-  if (params.event === 'flash') {
+  if (params.event.startsWith('flash')) {
     flash = await getFlashByTitle(searchParams?.title as string);
 
     if (!flash) {

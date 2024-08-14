@@ -1,12 +1,13 @@
 'use client';
 import { getFlashFromDrive } from '@/app/_lib/flash-actions';
+import { Flash as FlashType } from '@/app/_lib/flash.interfaces';
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import clsx from 'clsx';
 
 export default function Flash() {
-  const [flash, setFlash] = useState<any[]>([]);
+  const [flash, setFlash] = useState<FlashType[]>([]);
   useEffect(() => {
     async function fetchFlash() {
       const flashItems = await getFlashFromDrive();
@@ -26,7 +27,7 @@ export default function Flash() {
       <div className="flex flex-col items-center justify-center gap-2 overflow-hidden md:flex-row md:flex-wrap">
         {flash.map((flashItem) => (
           <Link
-            href={`/cal/flash?title=${flashItem.name}`}
+            href={`/cal/flash-${flashItem.duration}?title=${flashItem.name}`}
             key={flashItem.id}
             className={clsx('relative', {
               'pointer-events-none': flashItem.isSold,

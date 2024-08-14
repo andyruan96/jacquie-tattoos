@@ -2,7 +2,7 @@
 
 import { GoogleAuth } from 'google-auth-library';
 import { drive_v3, google } from 'googleapis';
-import { Flash, soldPrefix } from './flash.interfaces';
+import { Flash, isValidFlashTime, soldPrefix } from './flash.interfaces';
 
 export async function getFlashFromDrive(): Promise<Flash[]> {
   const credentials = JSON.parse(
@@ -20,7 +20,7 @@ export async function getFlashFromDrive(): Promise<Flash[]> {
   const service = google.drive({ version: 'v3', auth: auth });
 
   const res = await service.files.list({
-    orderBy: 'createdTime desc',
+    orderBy: 'createdTime desc,quotaBytesUsed', // secondary sort in case multiple flash uploads at the same time
     q: `'${process.env.GOOGLE_DRIVE_FLASH_FOLDER_ID}' in parents`,
     fields: 'files(id,name,mimeType,kind,description)',
   });
@@ -43,6 +43,6 @@ function mapToFlashItem(file: drive_v3.Schema$File): Flash {
     name: file.name ?? '',
     mimeType: file.mimeType ?? '',
     isSold: file.name?.startsWith(soldPrefix) ?? false,
-    description: file.description ?? '',
+    duration: isValidFlashTime(file.description) ? file.description : '60',
   };
 }

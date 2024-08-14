@@ -55,6 +55,11 @@ export async function POST(request: NextRequest) {
     case CalEvent.BookingCancel:
       success = await updateFlashSaleStatus(flashToModify, false);
       break;
+    case CalEvent.BookingRequest:
+      if (process.env.ENV !== 'prod') {
+        success = await updateFlashSaleStatus(flashToModify, true);
+      }
+      break;
     default:
       return NextResponse.json(
         { message: `Not Implemented for event type ${event}.` },
