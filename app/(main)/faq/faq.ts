@@ -43,6 +43,13 @@ const faqs: FAQ[] = [
       'I’m not picky when it comes to food. My only request is that it’s milk/cream free as I am lactose intolerant. A little bit of lactose is sometimes okay lol.',
     ],
   },
+  {
+    question: 'Where are you located?',
+    answer: [
+      'I work out of Gastown, Vancouver, near Nemisis Coffee.',
+      'I’ll provided my full address upon booking.',
+    ],
+  },
 ];
 
 export default faqs;
