@@ -4,7 +4,7 @@ import Link from 'next/link';
 export const metadata: Metadata = {
   title: 'Studio',
   description:
-    'Located at The Dominion Building, 207 W Hastings St, Vancouver, BC. No set business hours. Every artist takes care of their own bookings. I am only at the studio when I have appointments so there’s no guarantee I’m there. So if you have a question for me, it’s best to email or message me on Instagram rather than popping by the studio.',
+    "Located in Vancouver's Gastown, near Nemisis Coffee. I am only at the studio when I have appointments so there’s no guarantee I’m there. So if you have a question for me, it’s best to email or message me on Instagram rather than popping by the studio.",
 };
 
 export default function Studio() {
@@ -16,22 +16,20 @@ export default function Studio() {
       <div className="flex flex-col gap-6 lg:flex-row">
         <div className="text-ironstone lg:flex-1">
           <h3 className="font-bold uppercase text-porsche">
-            The Dominion Building
+            Gastown, Vancouver
           </h3>
           <p className="mb-3">
-            207 W Hastings St
+            Near Nemesis Coffee
             <br />
-            Vancouver, British Columbia, V6B 1H7
-            <br />
-            Unit provided upon booking.
+            Address provided upon booking.
           </p>
           <p className="mb-3">
-            <span className="font-bold">APPOINTMENT ONLY.</span> Please fill out
-            my booking form{' '}
+            <span className="font-bold">APPOINTMENT ONLY.</span>
+            <br />
+            Please fill out my booking form{' '}
             <Link href="/booking" className="text-porsche hover:underline">
-              here
+              here.
             </Link>
-            .
           </p>
           <p className="mb-3">
             <span className="font-bold">Working hours:</span>
@@ -56,7 +54,7 @@ export default function Studio() {
           allowFullScreen
           referrerPolicy="no-referrer-when-downgrade"
           src={`https://www.google.com/maps/embed/v1/place?key=${process.env.GOOGLE_MAPS_API_KEY}
-    &q=place_id:ChIJBwXXo3lxhlQRcMilcWye6oo`}
+    &q=place_id:ChIJRZTroXlxhlQRihHJRYedPys`}
         ></iframe>
       </div>
     </>

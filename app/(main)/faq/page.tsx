@@ -35,6 +35,17 @@ export default function Faq() {
           </div>
         </CardBody>
       </Card>
+      <div className="mt-5 flex w-full justify-center">
+        <iframe
+          className="w-full rounded-md border-8 border-porsche"
+          height="450"
+          loading="lazy"
+          allowFullScreen
+          referrerPolicy="no-referrer-when-downgrade"
+          src={`https://www.google.com/maps/embed/v1/place?key=${process.env.GOOGLE_MAPS_API_KEY}
+    &q=place_id:ChIJRZTroXlxhlQRihHJRYedPys`}
+        ></iframe>
+      </div>
     </>
   );
 }

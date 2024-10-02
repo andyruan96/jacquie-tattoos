@@ -6,7 +6,6 @@ import {
   faBolt,
   faEnvelope,
   faHouseChimney,
-  faLocationDot,
 } from '@fortawesome/free-solid-svg-icons';
 
 type NavLink = {
@@ -42,11 +41,11 @@ export const NavLinks: NavLink[] = [
     href: '/faq',
     icon: faCircleQuestion,
   },
-  {
-    label: 'Studio',
-    href: '/studio',
-    icon: faLocationDot,
-  },
+  // {
+  //   label: 'Studio',
+  //   href: '/studio',
+  //   icon: faLocationDot,
+  // },
   {
     label: 'Aftercare',
     href: '/aftercare',
