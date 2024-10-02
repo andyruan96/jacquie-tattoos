@@ -1,6 +1,7 @@
 import BookingForm from '@/app/_components/booking-form/booking-form';
 import { Card, CardBody, CardHeader } from '@nextui-org/card';
 import { Metadata } from 'next';
+import Link from 'next/link';
 
 export const metadata: Metadata = {
   title: 'Booking',
@@ -19,7 +20,13 @@ export default function Booking() {
         </CardHeader>
         <CardBody className="text-ironstone">
           <ul className="ml-5 list-disc">
-            <li>I work at Kultura (Kingsway location).</li>
+            <li>
+              I work at{' '}
+              <Link href="/studio" className="text-porsche hover:underline">
+                The Dominion Building
+              </Link>
+              .
+            </li>
             <li>
               I don&apos;t send out drawing designs before the appointment. So
               be as descriptive as possible. Minor changes can be made on the
