@@ -37,7 +37,7 @@ export default function Home() {
           </Button>
         </div>
       </div>
-      <div className="flex flex-col justify-center md:mt-10 md:flex-row">
+      {/* <div className="flex flex-col justify-center md:mt-10 md:flex-row">
         <div className="md:w- m-10 md:max-w-sm">
           <div className="flex flex-col gap-4 text-gray-600">
             <h3 className="text-4xl font-bold text-porsche">
@@ -68,7 +68,7 @@ export default function Home() {
           sizes="100vw"
           className="h-[500px] w-full object-cover md:h-auto md:w-2/3 md:max-w-xl md:rounded-lg"
         />
-      </div>
+      </div> */}
     </>
   );
 }
