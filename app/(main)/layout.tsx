@@ -10,6 +10,7 @@ import 'swiper/css';
 import 'swiper/css/free-mode';
 import 'swiper/css/thumbs';
 import 'swiper/css/effect-coverflow';
+import { Analytics } from '@vercel/analytics/next';
 
 config.autoAddCss = false;
 
@@ -43,6 +44,7 @@ export default function RootLayout({
           </div>
           <div id="modal-root"></div>
         </GoogleRecaptchaWrapper>
+        <Analytics />
       </body>
     </html>
   );
